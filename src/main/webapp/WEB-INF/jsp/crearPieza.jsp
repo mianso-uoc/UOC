@@ -31,7 +31,8 @@
 				</c:if>
 				<tr>
 					<td><form:label path="name" class="mb-3">Nombre</form:label></td>
-					<td><form:input path="name" class="mb-3" required="required" /></td>
+					<td><form:input path="name" class="mb-3" required="true" />
+					<form:errors path="name" class="error text-danger"/></td>
 				</tr>
 				<tr>
 					<td><form:label path="observaciones" class="mb-3">Observaciones</form:label></td>

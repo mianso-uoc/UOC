@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -87,12 +90,20 @@ public class PieceController {
 	}
 	
 	@RequestMapping(value= "/guardarPieza", method = RequestMethod.POST)
-	public String submit(@ModelAttribute("piece") Piece piece, ModelMap model) {
-		
+	public String submit(@Valid @ModelAttribute("piece") Piece piece, BindingResult bindingResult, ModelMap model) {
 		//Guarda los datos del formulario en la base de datos
+		if(bindingResult.hasErrors()) {
+			model.addAttribute("project", piece.getProjectMachine().getProject());
+			List<Welder> welders = welderRepository.findWelderByCompany(piece.getWelder().getCompany());
+			model.addAttribute("welders", welders);
+			return "crearPieza";
+		}
+		else
+		{
 		pieceRepository.save(piece);
 		
 		return  "redirect:/verProyecto/" + piece.getProjectMachine().getProject().getId();
+		}
 	}
 	
 	@RequestMapping("/verProyecto/{id}/quitarPieza/{idPiece}")

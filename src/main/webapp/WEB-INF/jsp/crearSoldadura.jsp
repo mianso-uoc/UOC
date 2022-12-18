@@ -10,7 +10,7 @@
 	<h1>Crear soldadura</h1>
 </c:if>
 
-
+<span class="badge bg-danger">${weld.alarm.info}</span> 
 <div class="card mt-1">
 	<div class="card-header mb-3 bg-info">Rellena los datos
 		requeridos</div>
