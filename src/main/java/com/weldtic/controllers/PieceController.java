@@ -101,7 +101,6 @@ public class PieceController {
 		else
 		{
 		pieceRepository.save(piece);
-		
 		return  "redirect:/verProyecto/" + piece.getProjectMachine().getProject().getId();
 		}
 	}

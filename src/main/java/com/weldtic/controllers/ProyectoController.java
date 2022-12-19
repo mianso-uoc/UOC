@@ -5,13 +5,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,10 +26,12 @@ import com.weldtic.model.Manager;
 import com.weldtic.model.Piece;
 import com.weldtic.model.Project;
 import com.weldtic.model.ProjectMachine;
+import com.weldtic.model.User;
 import com.weldtic.repository.MachineRepository;
 import com.weldtic.repository.PieceRepository;
 import com.weldtic.repository.ProjectMachineRepository;
 import com.weldtic.repository.ProjectRepository;
+import com.weldtic.repository.UserRepository;
 
 @Controller
 public class ProyectoController {
@@ -42,16 +47,15 @@ public class ProyectoController {
 
 	@Autowired
 	private PieceRepository<Piece> pieceRepository;
+	
+	@Autowired
+	private UserRepository<User> userRepository;
 
 	@RequestMapping("/proyecto")
 	public String inicio(Model model) {
 		List<Project> projects = projectRepository.findAll();
 		model.addAttribute("projects", projects);
-
-//		Company company = new Company();
-//		company.setName("Twitter");
-//		companyRepository.save(company);
-
+		
 		return "inicioManager";
 	}
 
@@ -87,7 +91,7 @@ public class ProyectoController {
 //			List<ProjectMachine> pm = projectMachineRepository.findAll();
 			for (ProjectMachine projectMachine : pm) {
 //				if (projectMachine.getProject().getId() == id) {
-					pieces.addAll(pieceRepository.findByProjectMachine(projectMachine));
+				pieces.addAll(pieceRepository.findByProjectMachine(projectMachine));
 //				}
 			}
 			model.addAttribute("pieces", pieces);
@@ -109,7 +113,12 @@ public class ProyectoController {
 	}
 
 	@RequestMapping(value = "/guardarProyecto", method = RequestMethod.POST)
-	public String submit(@ModelAttribute("project") Project project, ModelMap model) {
+	public String submit(@Valid @ModelAttribute("project") Project project, BindingResult bindingResult, ModelMap model) {
+		//Se comprueba que no hay errores en el formulario
+		if(bindingResult.hasErrors()) {
+			return "crearProyecto";
+		}
+		else {
 		// Se guarda el objeto del user logeado
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Manager currentPrincipalName = (Manager) authentication.getPrincipal();
@@ -117,8 +126,18 @@ public class ProyectoController {
 
 		// Guarda los datos del formulario en la base de datos
 		projectRepository.save(project);
-	
+		
+		//se cargan los datos del usuario logeado para que aparezca el nuevo proyecto
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)auth.getPrincipal();
+		//se accede a la base de datos para obtener el usuario con la lista de los proyectos actualizada
+		user = userRepository.findUserByName(currentPrincipalName.getName());
+		Authentication newAuth = new UsernamePasswordAuthenticationToken(user,
+				user.getPassword(), user.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(newAuth);
+
 		return "redirect:/proyecto";
+		}
 	}
 
 	@RequestMapping("/verProyecto/{id}/anadir/{idMachine}")

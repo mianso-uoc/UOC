@@ -26,9 +26,9 @@
 					</tr>
 				</c:if>
 				<tr>
-
 					<td><form:label path="name" class="mb-3">Nombre</form:label></td>
-					<td><form:input path="name" class="mb-3" /></td>
+					<td><form:input path="name" class="mb-3" required="true"/>
+					<form:errors path="name" class="error text-danger"/></td>
 				</tr>
 				<tr>
 					<td><form:label path="description" class="mb-3">Descripción</form:label></td>
@@ -37,10 +37,11 @@
 				<tr>
 					<td><input class="btn btn-primary mb-3" type="submit"
 						value="Aceptar"></td>
-
-					<td><a href="/proyecto/${project.id}/crearPieza"
-						class=" btn mb-3 btn-outline-primary" role="button"
-						aria-pressed="true">Crear pieza</a>
+					<c:if test="${action == 'update'}">
+						<td><a href="/proyecto/${project.id}/crearPieza"
+							class=" btn mb-3 btn-outline-primary" role="button"
+							aria-pressed="true">Crear pieza</a></td>
+					</c:if>
 				</tr>
 			</table>
 		</form:form>
@@ -65,8 +66,7 @@
 					<td>${piece.projectMachine.machine.id}</td>
 					<td><a href="/verPieza/${piece.id}"
 						class=" btn btn-primary btn-sm active" role="button"
-						aria-pressed="true"><i class="bi bi-pencil"></i></a> 
-						<a
+						aria-pressed="true"><i class="bi bi-pencil"></i></a> <a
 						href="/verProyecto/${project.id}/quitarPieza/${piece.id}"
 						class=" btn btn-danger btn-sm active" role="button"
 						aria-pressed="true"><i class="bi bi-trash"></i></a></td>

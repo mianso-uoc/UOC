@@ -12,4 +12,5 @@ import com.weldtic.model.User;
 public interface UserRepository<T extends User>extends JpaRepository<T, Long> {
 	Optional<User> findUserByEmail(String email);
 	List <User> findUserByTipo(String tipo);
+	User findUserByName(String name);
 }
