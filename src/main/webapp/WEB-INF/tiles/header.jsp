@@ -38,7 +38,7 @@
 					</li>
 				</ul>
 				<div class="form-inline my-2 my-lg-0">
-					<span class="text-light"><i class="bi bi-person-circle"></i> 
+					<span class="text-light"><security:authentication property="principal.tipo" /><i class="bi bi-person-circle ms-3"></i> 
  					<security:authentication property="principal.username" /> 
 						
   <span class="navbar-brand mb-0 h1"></span>

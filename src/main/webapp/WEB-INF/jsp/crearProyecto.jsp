@@ -2,6 +2,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
 
 
 <c:if test="${action == 'update'}">
@@ -27,8 +29,8 @@
 				</c:if>
 				<tr>
 					<td><form:label path="name" class="mb-3">Nombre</form:label></td>
-					<td><form:input path="name" class="mb-3" required="true"/>
-					<form:errors path="name" class="error text-danger"/></td>
+					<td><form:input path="name" class="mb-3" required="true" /> <form:errors
+							path="name" class="error text-danger" /></td>
 				</tr>
 				<tr>
 					<td><form:label path="description" class="mb-3">Descripción</form:label></td>
@@ -37,7 +39,8 @@
 				<tr>
 					<td><input class="btn btn-primary mb-3" type="submit"
 						value="Aceptar"></td>
-					<c:if test="${action == 'update'}">
+					<c:if
+						test="${action == 'update' && fn:length(project.projectMachine) > 0 }">
 						<td><a href="/proyecto/${project.id}/crearPieza"
 							class=" btn mb-3 btn-outline-primary" role="button"
 							aria-pressed="true">Crear pieza</a></td>
