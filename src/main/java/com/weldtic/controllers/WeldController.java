@@ -67,6 +67,21 @@ public class WeldController {
 		return "crearSoldadura";
 	}
 
+	@RequestMapping("/soldador/verSoldadura/{id}")
+	public String SoldadorVerSoldadura(@PathVariable Long id, Model model) {
+		Optional<Weld> weld = weldRepository.findById(id);
+		
+		if (weld.isPresent()) {
+			model.addAttribute("weld", weld.get());
+			model.addAttribute("piece", weld.get().getPiece());
+			model.addAttribute("weldStatus",Arrays.asList(WeldStatus.values()));
+		}
+		model.addAttribute("action", "update");
+
+	
+		return "verSoldadura";
+	}
+	
 	@RequestMapping(value = "/verPieza/{id}/crearSoldadura", method = RequestMethod.GET)
 	public String nuevaPieza(@PathVariable Long id, Model model) {
 		Weld weld = new Weld();

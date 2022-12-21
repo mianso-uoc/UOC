@@ -70,7 +70,19 @@ public class PieceController {
 	
 		return "crearPieza";
 	}
-
+	@RequestMapping("/soldador/verPieza/{id}")
+	public String soldadorVerPieza(@PathVariable Long id, Model model) {
+		Optional<Piece> piece = pieceRepository.findById(id);
+		List<Weld> welds = new ArrayList<>();
+		
+		if (piece.isPresent()) {
+			model.addAttribute("piece", piece.get());
+			model.addAttribute("project", piece.get().getProjectMachine().getProject());
+			welds = weldRepository.findByPiece(piece.get());
+			model.addAttribute("welds", welds);
+		}
+		return "verPieza";
+	}
 	@RequestMapping(value = "/proyecto/{id}/crearPieza", method = RequestMethod.GET)
 	public String nuevaPieza(@PathVariable Long id, Model model) {
 		Piece piece = new Piece();

@@ -16,11 +16,6 @@
 		requeridos</div>
 	<div class="card-bdbody">
 		<form:form method="POST" action="/guardarPieza" modelAttribute="piece">
-			<c:if test="${action == 'update'}">
-				<td><a href="/verPieza/${piece.id}/crearSoldadura"
-					class=" btn btn-primary active mb-4" role="button"
-					aria-pressed="true"> Crear soldadura</a>
-			</c:if>
 
 			<table>
 				<c:if test="${action == 'update'}">
@@ -64,8 +59,13 @@
 						</form:select></td>
 				</tr>
 				<tr>
-					<td><input class="btn btn-primary mb-3" type="submit"
+					<td><input class="btn btn-primary mb-4" type="submit"
 						value="Aceptar"></td>
+			<c:if test="${action == 'update'}">
+				<td><a href="/verPieza/${piece.id}/crearSoldadura"
+					class=" btn btn-outline-primary mb-4" role="button"
+					aria-pressed="true"> Crear soldadura</a></td>
+			</c:if>
 				</tr>
 			</table>
 		</form:form>

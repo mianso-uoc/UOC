@@ -1,6 +1,7 @@
 package com.weldtic.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -10,8 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.weldtic.model.Company;
+import com.weldtic.model.Piece;
 import com.weldtic.model.User;
+import com.weldtic.model.Welder;
 import com.weldtic.repository.CompanyRepository;
+import com.weldtic.repository.PieceRepository;
 import com.weldtic.repository.UserRepository;
 
 @Controller
@@ -22,12 +26,9 @@ public class InicioController {
 
 	@Autowired
 	private UserRepository<User> userRepository;
-
-//	@GetMapping("/")
-//	public String index(Model model, Principal principal) {
-//		model.addAttribute("message", "You are logged in as " + principal.getName());
-//		return "inicio";
-//	}
+	
+	@Autowired
+	private PieceRepository<Piece> pieceRepository;
 
 	@RequestMapping("/inicio")
 	public String inicio(Model model) {
@@ -39,23 +40,20 @@ public class InicioController {
 
 		if (logUser.getTipo().equals("Manager")) {
 
-			return "inicioManager";
+			return "inicioResponsable";
 		}
 		if (logUser.getTipo().equals("Welder")) {
 
-			return "inicioWelder";
-		} else {
+			Welder welder = (Welder) logUser;
+			List<Piece> pieces = pieceRepository.findByWelder(welder);
+			model.addAttribute("pieces", pieces);
+			return "inicioSoldador";
+		} 
+		else {
 			List<User> users = userRepository.findAll();
 			model.addAttribute("users", users);
 
 			return "inicio";
 		}
 	}
-
-//	@RequestMapping(value =  "/login", method = RequestMethod.POST)
-//	public String acceso(@RequestParam("usuario") String usuario, @RequestParam("password") String password) {
-//		System.out.println("EMAIL: " + usuario);
-//		return "inicio";
-//	}
-
 }
