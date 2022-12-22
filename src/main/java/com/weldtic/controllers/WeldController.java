@@ -88,7 +88,8 @@ public class WeldController {
 		Optional<Piece> piece = pieceRepository.findById(id);
 		if (piece.isPresent()) {
 			weld.setPiece(piece.get());
-			model.addAttribute("weldStatus",Arrays.asList(WeldStatus.values()));
+			//model.addAttribute("weldStatus",Arrays.asList(WeldStatus.values()));
+
 
 		}
 		model.addAttribute("weld", weld);
@@ -101,6 +102,7 @@ public class WeldController {
 	public String submit(@ModelAttribute("weld") Weld weld, ModelMap model) {
 		
 		//Guarda los datos del formulario en la base de datos
+		weld.setState("CREADA");
 		weldRepository.save(weld);
 		
 		return  "redirect:/verPieza/" + weld.getPiece().getId();

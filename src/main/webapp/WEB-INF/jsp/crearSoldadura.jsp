@@ -50,13 +50,13 @@
 					<td><form:hidden path="piece.id" class="mb-3"/></td>
 				</tr>
 				<tr>
-					<td><form:label path="state" class="form-label mb-3">Estado</form:label></td>
-					<td><form:select path="state" class="form-select mb-3">
-							<c:forEach items="${weldStatus}" var="status">
-								<form:option value="${status}"></form:option>
-							</c:forEach>
+<%-- 					<td><form:label path="state" class="form-label mb-3">Estado</form:label></td> --%>
+<%-- 					<td><form:select path="state" class="form-select mb-3"> --%>
+<%-- 							<c:forEach items="${weldStatus}" var="status"> --%>
+<%-- 								<form:option value="${status}"></form:option> --%>
+<%-- 							</c:forEach> --%>
 
-						</form:select></td>
+<%-- 						</form:select></td> --%>
 				</tr>
 				<tr>
 					<td><input class="btn btn-primary mb-3" type="submit"
