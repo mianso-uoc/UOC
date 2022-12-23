@@ -16,7 +16,7 @@
 <div class="card mt-1">
 	<div class="card-header mb-3 bg-info">Rellena los datos
 		requeridos</div>
-	<div class="card-bdbody">
+	<div class="card-body">
 		<form:form method="POST" action="/guardarProyecto"
 			modelAttribute="project">
 
@@ -50,6 +50,7 @@
 		</form:form>
 	</div>
 	<div class="card-header mb-3 bg-info">Piezas del proyecto</div>
+	<div class="card-body">
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
 			<tr>
@@ -77,8 +78,10 @@
 			</c:forEach>
 		</tbody>
 	</table>
+	</div>
 	<div class="card-header mb-3 bg-info">Máquinas asignadas al
 		proyecto</div>
+			<div class="card-body">
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
 			<tr>
@@ -100,8 +103,10 @@
 			</c:forEach>
 		</tbody>
 	</table>
+	</div>
 	<div class="card-header mb-3 bg-info">Máquinas sin asignar al
 		proyecto</div>
+			<div class="card-body">
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
 			<tr>
@@ -122,6 +127,7 @@
 			</c:forEach>
 		</tbody>
 	</table>
+	</div>
 </div>
 <div class="col-md-6">
 	<canvas id="myChart"></canvas>

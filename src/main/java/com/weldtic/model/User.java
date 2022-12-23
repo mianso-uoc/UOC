@@ -1,6 +1,8 @@
 package com.weldtic.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -15,6 +17,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Formula;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
@@ -115,11 +118,19 @@ public class User implements UserDetails {
 		return "User [id=" + id + ", name=" + name + "]";
 	}
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public Collection<? extends GrantedAuthority> getAuthorities() {
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//        authorities.add(new SimpleGrantedAuthority(getTipo()));
+//        return authorities;
+//	}
+	
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> roles = new ArrayList<>();
+        roles.add(new SimpleGrantedAuthority(tipo.toString()));
+        return roles;
+    }
 
 	@Override
 	public String getUsername() {

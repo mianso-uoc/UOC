@@ -9,6 +9,6 @@ public class WatcherControllerAdvice {
 
 	@ModelAttribute
 	public void loadAlarm (Model model) {
-		
+		System.out.println("HOLAAAAAAAAAAAAAAAAAAA");
 	}
 }
