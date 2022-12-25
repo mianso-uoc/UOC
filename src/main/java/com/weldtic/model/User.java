@@ -118,19 +118,19 @@ public class User implements UserDetails {
 		return "User [id=" + id + ", name=" + name + "]";
 	}
 
-//	@Override
-//	public Collection<? extends GrantedAuthority> getAuthorities() {
-//        List<GrantedAuthority> authorities = new ArrayList<>();
-//        authorities.add(new SimpleGrantedAuthority(getTipo()));
-//        return authorities;
-//	}
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(getTipo()));
+        return authorities;
+	}
 	
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(new SimpleGrantedAuthority(tipo.toString()));
-        return roles;
-    }
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        List<GrantedAuthority> roles = new ArrayList<>();
+//        roles.add(new SimpleGrantedAuthority(tipo.toString()));
+//        return roles;
+//    }
 
 	@Override
 	public String getUsername() {

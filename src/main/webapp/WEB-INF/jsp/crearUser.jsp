@@ -10,7 +10,7 @@
 
 <div class="card mt-1">
 	<div class="card-header mb-3 bg-info">Rellena los datos requeridos</div>
-	<div class="card-bdbody">
+	<div class="card-body">
 		<form:form method="POST" action="/guardarUser"
 			modelAttribute="user">
 			<!--form:hidden path="machines"/-->

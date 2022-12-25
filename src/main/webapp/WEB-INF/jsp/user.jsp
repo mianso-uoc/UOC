@@ -7,7 +7,7 @@
 
 <div class="card mt-1">
 	<div class="card-header mb-3 bg-info"> Listado de usuarios</div>
-	<div class="card-bdbody">
+	<div class="card-body">
 		<table class="table table-striped table-sm table-hover">
 			<thead>
 				<tr>

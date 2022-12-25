@@ -7,7 +7,7 @@
 
 <div class="card mt-1">
 	<div class="card-header mb-3 bg-info">Información de la soldadura</div>
-	<div class="card-bdbody ms-2">
+	<div class="card-body">
 		<h2>Intensidad: ${weld.amp}</h2>
 		<h2>Voltaje: ${weld.volt}</h2>
 		<h2>Tolerancia: ${weld.tolerance}</h2>

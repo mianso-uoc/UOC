@@ -132,5 +132,3 @@
 <div class="col-md-6">
 	<canvas id="myChart"></canvas>
 </div>
-
-</div>

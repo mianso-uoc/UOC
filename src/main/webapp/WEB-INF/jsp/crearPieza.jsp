@@ -14,9 +14,8 @@
 <div class="card mt-1">
 	<div class="card-header mb-3 bg-info">Rellena los datos
 		requeridos</div>
-	<div class="card-bdbody">
+	<div class="card-body">
 		<form:form method="POST" action="/guardarPieza" modelAttribute="piece">
-
 			<table>
 				<c:if test="${action == 'update'}">
 					<tr>
@@ -26,8 +25,8 @@
 				</c:if>
 				<tr>
 					<td><form:label path="name" class="mb-3">Nombre</form:label></td>
-					<td><form:input path="name" class="mb-3" required="true" />
-					<form:errors path="name" class="error text-danger"/></td>
+					<td><form:input path="name" class="mb-3" required="true" /> <form:errors
+							path="name" class="error text-danger" /></td>
 				</tr>
 				<tr>
 					<td><form:label path="observaciones" class="mb-3">Observaciones</form:label></td>
@@ -61,52 +60,51 @@
 				<tr>
 					<td><input class="btn btn-primary mb-4" type="submit"
 						value="Aceptar"></td>
-			<c:if test="${action == 'update'}">
-				<td><a href="/verPieza/${piece.id}/crearSoldadura"
-					class=" btn btn-outline-primary mb-4" role="button"
-					aria-pressed="true"> Crear soldadura</a></td>
-			</c:if>
+					<c:if test="${action == 'update'}">
+						<td><a href="/verPieza/${piece.id}/crearSoldadura"
+							class=" btn btn-outline-primary mb-4" role="button"
+							aria-pressed="true"> Crear soldadura</a></td>
+					</c:if>
 				</tr>
 			</table>
 		</form:form>
 	</div>
-
-
 	<div class="card-header mb-3 bg-info">Soldaduras de la pieza</div>
-	<table class="table table-striped table-bordered table-hover">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Estado</th>
-				<th>Intensidad</th>
-				<th>Voltaje</th>
-				<th>Tolerancia</th>
-				<th>Observaciones</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach items="${welds}" var="weld">
+	<div class="card-body">
+		<table class="table table-striped table-bordered table-hover">
+			<thead>
 				<tr>
-					<td>${weld.id}</td>
-					<td>${weld.state}</td>
-					<td>${weld.amp}</td>
-					<td>${weld.volt}</td>
-					<td>${weld.tolerance}</td>
-					<td>${weld.note}</td>
-					<td><a href="/verSoldadura/${weld.id}"
-						class=" btn btn-primary btn-sm active" role="button"
-						aria-pressed="true"><i class="bi bi-pencil"></i></a> <a
-						href="/verPieza/${piece.id}/quitarSoldadura/${weld.id}"
-						class=" btn btn-danger btn-sm active" role="button"
-						aria-pressed="true"><i class="bi bi-trash"></i></a></td>
+					<th>Id</th>
+					<th>Estado</th>
+					<th>Intensidad</th>
+					<th>Voltaje</th>
+					<th>Tolerancia</th>
+					<th>Observaciones</th>
+					<th></th>
 				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
-
-	<div class="col-md-6">
-		<canvas id="myChart"></canvas>
+			</thead>
+			<tbody>
+				<c:forEach items="${welds}" var="weld">
+					<tr>
+						<td>${weld.id}</td>
+						<td>${weld.state}</td>
+						<td>${weld.amp}</td>
+						<td>${weld.volt}</td>
+						<td>${weld.tolerance}</td>
+						<td>${weld.note}</td>
+						<td><a href="/verSoldadura/${weld.id}"
+							class=" btn btn-primary btn-sm active" role="button"
+							aria-pressed="true"><i class="bi bi-pencil"></i></a> <a
+							href="/verPieza/${piece.id}/quitarSoldadura/${weld.id}"
+							class=" btn btn-danger btn-sm active" role="button"
+							aria-pressed="true"><i class="bi bi-trash"></i></a></td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
 	</div>
-
 </div>
+<div class="col-md-6">
+	<canvas id="myChart"></canvas>
+</div>
+

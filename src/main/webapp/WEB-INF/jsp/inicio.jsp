@@ -21,30 +21,22 @@
 				</tr>
 			</thead>
 			<tbody>
-			<tbody>
 				<c:forEach items="${users}" var="user">
 					<tr>
-					
-					<td>${user.name}</td>
-					<td>${user.email}</td>         
-					<td><a href="/verUser/${user.id}"
+						<td>${user.name}</td>
+						<td>${user.email}</td>
+						<td><a href="/verUser/${user.id}"
 							class=" btn btn-primary active" role="button" aria-pressed="true"><i
-								class="bi bi-eye"></i></a>
-					
-					</td>
-					
-				</tr>
+								class="bi bi-eye"></i></a></td>
+					</tr>
 				</c:forEach>
 			</tbody>
-			
-
-		
 		</table>
 	</div>
 	<div class="col-md-6">
-	  <canvas id="myChart"></canvas>
+		<canvas id="myChart"></canvas>
 	</div>
-	
+
 </div>
 
 <script>
