@@ -1,6 +1,5 @@
 package com.weldtic.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.weldtic.model.Manager;
-import com.weldtic.model.User;
 import com.weldtic.model.Weld;
 import com.weldtic.repository.WeldRepository;
 

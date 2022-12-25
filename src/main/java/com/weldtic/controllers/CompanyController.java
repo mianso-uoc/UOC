@@ -26,7 +26,7 @@ public class CompanyController {
 	@Autowired
 	private MachineRepository<Machine> machineRepository;
 	
-	@RequestMapping("/company")
+	@RequestMapping("/verEmpresa")
 	public String inicio(Model model) {
 		List<Company> companies = companyRepository.findAll();
 		model.addAttribute("companies", companies);
@@ -35,7 +35,7 @@ public class CompanyController {
 //		company.setName("Twitter");
 //		companyRepository.save(company);
 		
-		return "company";
+		return "verEmpresa";
 	}
 	//SELECT de base de datos con la id de company
 	@RequestMapping("/verEmpresa/{id}")

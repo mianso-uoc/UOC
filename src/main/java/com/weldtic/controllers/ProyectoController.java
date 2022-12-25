@@ -56,7 +56,7 @@ public class ProyectoController {
 		List<Project> projects = projectRepository.findAll();
 		model.addAttribute("projects", projects);
 		
-		return "inicioManager";
+		return "inicioResponsable";
 	}
 
 	@RequestMapping("/verProyecto/{id}")

@@ -58,7 +58,7 @@
 						<td>${weld.note}</td>
 						<td><a href="/soldador/verSoldadura/${weld.id}"
 							class=" btn btn-primary btn-sm active" role="button"
-							aria-pressed="true"><i class="bi bi-pencil"></i></a></td>
+							aria-pressed="true"><i class="bi bi-eye"></i></a></td>
 					</tr>
 				</c:forEach>
 			</tbody>
