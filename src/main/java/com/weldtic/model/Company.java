@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "company")
@@ -22,12 +23,14 @@ public class Company {
 	private long id;
 
 	@Column(name = "name")
+	@NotBlank
 	private String name;
 
 	@Column(name = "address")
 	private String address;
 
 	@Column(name = "nif")
+	@NotBlank
 	private String nif;
 
 	@Column(name = "description")

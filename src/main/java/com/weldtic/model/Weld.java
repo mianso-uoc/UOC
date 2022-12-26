@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "weld")
@@ -25,12 +26,15 @@ public class Weld {
 	private String state;
 
 	@Column(name = "amp")
+	@NotNull
 	private Float amp;
 
 	@Column(name = "volt")
+	@NotNull
 	private Float volt;
 
 	@Column(name = "tolerance")
+	@NotNull
 	private int tolerance;
 
 	@Column(name = "note")

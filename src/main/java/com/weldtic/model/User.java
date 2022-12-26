@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.Formula;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,15 +35,18 @@ public class User implements UserDetails {
 	private long id;
 
 	@Column(name = "name")
+	@NotBlank
 	private String name;
 	
 	@Column(name = "password")
+	@NotBlank
 	private String password;
 
 	@Column(name = "address")
 	private String address;
 
 	@Column(name = "email")
+	@NotBlank
 	private String email;
 
 	@Column(name = "phone")

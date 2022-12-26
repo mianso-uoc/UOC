@@ -24,15 +24,23 @@
 				<tr>
 
 					<td><form:label path="name" class="form-label mb-3">Nombre</form:label></td>
-					<td><form:input path="name" class="form-control mb-3" /></td>
+					<td><form:input path="name" class="form-control mb-3" required="true" /><form:errors
+							path="name" class="error text-danger" /></td>
 				</tr>
+				<c:if test="${action == 'new'}">
 				<tr>
-					<td><form:label path="password" class="form-label mb-3">Contraseña</form:label></td>
-					<td><form:input path="password" class="form-control mb-3" /></td>
+					<td><form:label path="password" class= "form-label mb-3">Contraseña</form:label></td>
+					<td><form:input path="password" class= "form-control mb-3" required="true" /><form:errors
+							path="password" class="error text-danger" /></td>
 				</tr>
+				</c:if>
+				<c:if test="${action == 'update'}">
+				<form:hidden path="password"></form:hidden>
+				</c:if>
 				<tr>
 					<td><form:label path="email" class="form-label mb-3">Email</form:label></td>
-					<td><form:input path="email" class="form-control mb-3" /></td>
+					<td><form:input path="email" type="email" class="form-control mb-3" required="true" /><form:errors
+							path="email" class="error text-danger" /></td>
 				</tr>
 				<tr>
 					<td><form:label path="address" class="form-label mb-3">Dirección</form:label></td>

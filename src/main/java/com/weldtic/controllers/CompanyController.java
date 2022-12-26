@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.weldtic.model.Company;
 import com.weldtic.model.Machine;
@@ -41,7 +42,6 @@ public class CompanyController {
 	@RequestMapping("/verEmpresa/{id}")
 	public String inicio(@PathVariable Long id, Model model) {
 		Optional<Company> company = companyRepository.findById(id);
-           		System.out.println(company.get().getMachines());
 		
 		List<Machine> machines = machineRepository.findAll();
 		model.addAttribute("machines", machines);
@@ -74,17 +74,26 @@ public class CompanyController {
 		companyRepository.save(company);
 		
 
-		return  "redirect:/company";
+		return  "redirect:/verEmpresa";
 	}
 	
 	@RequestMapping("/quitarEmpresa/{id}")
-	public String quitar(@PathVariable Long id, Model model) {
+	public String quitar(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
 		
 		Optional<Company> company = companyRepository.findById(id);
-		
-		if (company.isPresent()){
-			companyRepository.delete(company.get());
+		try {
+			if (company.isPresent()){
+				companyRepository.delete(company.get());
+			}
+			redirectAttributes.addFlashAttribute("aviso", "Empresa eliminada correctamente");
+			redirectAttributes.addFlashAttribute("tipo", "success");
+			return "redirect:/verEmpresa";
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("aviso", "No se puede eliminar la empresa");
+			redirectAttributes.addFlashAttribute("tipo", "danger");
+
+			return "redirect:/verEmpresa";
 		}
-		return "redirect:/company";
+
 	}
 }

@@ -14,12 +14,18 @@
 		<h3>Estado: ${weld.state}</h3>
 	</div>
 	<div class="d-inline-flex justify-content-center">
-<span>
-	<a href="/verSoldadura/${weld.id}" class=" btn btn-success active mt-5"
-		role="button" aria-pressed="true"><i class="bi bi-play-circle me-2"></i>Iniciar Soldadura</a>
-			<a href="/verSoldadura/${weld.id}" class=" btn btn-danger active ms-5 mt-5"
-		role="button" aria-pressed="true"><i class="bi bi-stop-circle me-2"></i>Parar Soldadura</a></span>
-		</div>
+		<span> <c:if test="${weld.state == 'CREADA'}">
+				<a href="/iniciarSoldadura/${weld.id}"
+					class=" btn btn-success active mt-5" role="button"
+					aria-pressed="true"><i class="bi bi-play-circle me-2"></i>Iniciar
+					Soldadura</a>
+			</c:if> <c:if test="${weld.state == 'INICIADA'}">
+				<a href="/pararSoldadura/${weld.id}"
+					class=" btn btn-danger active ms-5 mt-5" role="button"
+					aria-pressed="true"><i class="bi bi-stop-circle me-2"></i>Parar
+					Soldadura</a>
+			</c:if></span>
+	</div>
 	<div class="col-md-6">
 		<canvas id="myChart"></canvas>
 	</div>

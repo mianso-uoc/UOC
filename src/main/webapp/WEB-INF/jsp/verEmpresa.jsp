@@ -1,12 +1,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+<c:if test="${aviso != null}">
+<div class="alert alert-${tipo} alert-dismissible fade show" role="alert">
+  <strong><c:out value="${aviso}"></c:out></strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+</c:if>
 <h1>Empresas</h1>
 
 <a href="/crearEmpresa" class="btn btn-primary active mb-2" role="button" aria-pressed="true">Crear empresa</a>
 
 <div class="card mt-1">
 	<div class="card-header mb-3 bg-info"> Listado de empresas creadas</div>
-	<div class="card-bdbody">
+	<div class="card-body">
 		<table class="table table-striped table-sm table-hover">
 			<thead>
 				<tr>

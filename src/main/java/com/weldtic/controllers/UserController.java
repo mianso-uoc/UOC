@@ -3,15 +3,19 @@ package com.weldtic.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.weldtic.enums.WeldMode;
 import com.weldtic.model.Company;
@@ -79,7 +83,12 @@ public class UserController {
 		return "crearUser";
 	}
 	@RequestMapping(value= "/guardarUser", method = RequestMethod.POST)
-	public String submit(@ModelAttribute("user") User user,ModelMap model) {
+	public String submit(@Valid @ModelAttribute("user") User user,BindingResult bindingResult,ModelMap model) {
+		
+		if(bindingResult.hasErrors()) {
+			return "crearUser";
+		}
+		else {
 		//Se encripta la contraseña
 		String passw = user.getPassword();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -90,5 +99,25 @@ public class UserController {
 		userRepository.save(user);
 		
 		return  "redirect:/user";
+		}
+	}
+	
+	@RequestMapping("/quitarUser/{id}")
+	public String quitar(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+		
+		Optional<User> user = userRepository.findById(id);
+		try {
+			if (user.isPresent()){
+				userRepository.delete(user.get());
+			}
+			redirectAttributes.addFlashAttribute("aviso", "Usuario eliminado correctamente");
+			redirectAttributes.addFlashAttribute("tipo", "success");
+			return "redirect:/user";
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("aviso", "No se puede eliminar el usuario");
+			redirectAttributes.addFlashAttribute("tipo", "danger");
+
+			return "redirect:/user";
+		}
 	}
 }

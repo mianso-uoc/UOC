@@ -31,9 +31,6 @@
 										soldador</a></li>
 								<li><a class="dropdown-item" href="/crearResponsable">Crear
 										responsable</a></li>
-								<li><hr class="dropdown-divider"></li>
-								<li><a class="dropdown-item" href="/logout">Eliminar
-										usuarios</a></li>
 							</ul></li>
 						<li class="nav-item dropdown"><a
 							class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
@@ -44,9 +41,6 @@
 										empresas</a></li>
 								<li><a class="dropdown-item" href="/crearEmpresa">Crear
 										empresa</a></li>
-								<li><hr class="dropdown-divider"></li>
-								<li><a class="dropdown-item" href="/logout">Eliminar
-										empresas</a></li>
 							</ul></li>
 					</security:authorize>
 									<security:authorize access="hasRole('Manager')">
@@ -81,12 +75,8 @@
 										piezas</a></li>
 							</ul></li>
 					</ul>
-
 				</security:authorize>
 				</ul>
-
-
-
 				<div class="form-inline my-2 my-lg-0">
 
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">

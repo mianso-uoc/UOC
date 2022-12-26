@@ -1,6 +1,6 @@
 package com.weldtic.model;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

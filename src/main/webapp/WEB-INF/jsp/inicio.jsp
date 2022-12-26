@@ -27,7 +27,9 @@
 						<td>${user.email}</td>
 						<td><a href="/verUser/${user.id}"
 							class=" btn btn-primary active" role="button" aria-pressed="true"><i
-								class="bi bi-eye"></i></a></td>
+								class="bi bi-eye"></i></a> <a href="/quitarUser/${user.id}"
+							class=" btn btn-danger active" role="button" aria-pressed="true"><i
+								class="bi bi-trash"></i></a></td>
 					</tr>
 				</c:forEach>
 			</tbody>

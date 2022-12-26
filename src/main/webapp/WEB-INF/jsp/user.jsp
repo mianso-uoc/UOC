@@ -1,5 +1,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+<c:if test="${aviso != null}">
+<div class="alert alert-${tipo} alert-dismissible fade show" role="alert">
+  <strong><c:out value="${aviso}"></c:out></strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+</c:if>
+
 <h1>Usuarios</h1>
 <a href="/crearUser" class="btn btn-primary active mb-2" role="button" aria-pressed="true">Crear usuario</a>
 <a href="/crearSoldador" class="btn btn-primary active mb-2" role="button" aria-pressed="true">Crear soldador</a>
@@ -31,9 +38,8 @@
 					<td>${user.address}</td>
 					<td>${user.phone}</td>             
 					<td><a href="/verUser/${user.id}" class=" btn btn-primary active" role="button" aria-pressed="true"><i class="bi bi-eye"></i></a>
-					
+					<a href="/quitarUser/${user.id}" class=" btn btn-danger active" role="button" aria-pressed="true"><i class="bi bi-trash"></i></a>
 					</td>
-					
 				</tr>
 				</c:forEach>
 			</tbody>

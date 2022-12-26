@@ -1,8 +1,13 @@
 package com.weldtic.controllers;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -10,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +24,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.weldtic.enums.WeldStatus;
 import com.weldtic.model.Manager;
 import com.weldtic.model.Piece;
-import com.weldtic.model.Project;
+import com.weldtic.model.Reading;
 import com.weldtic.model.Weld;
 import com.weldtic.model.Welder;
 import com.weldtic.repository.PieceRepository;
-import com.weldtic.repository.ProjectRepository;
+import com.weldtic.repository.ReadingRepository;
 import com.weldtic.repository.WeldRepository;
 import com.weldtic.repository.WelderRepository;
 
@@ -38,7 +44,7 @@ public class WeldController {
 	private WelderRepository<Welder> welderRepository;
 	
 	@Autowired
-	private ProjectRepository<Project> projectRepository;
+	private ReadingRepository<Reading> readingRepository;
 	
 	@Autowired
 	private PieceRepository<Piece> pieceRepository;
@@ -68,7 +74,7 @@ public class WeldController {
 	}
 
 	@RequestMapping("/soldador/verSoldadura/{id}")
-	public String SoldadorVerSoldadura(@PathVariable Long id, Model model) {
+	public String soldadorVerSoldadura(@PathVariable Long id, Model model) {
 		Optional<Weld> weld = weldRepository.findById(id);
 		
 		if (weld.isPresent()) {
@@ -99,14 +105,18 @@ public class WeldController {
 	}
 	
 	@RequestMapping(value= "/guardarSoldadura", method = RequestMethod.POST)
-	public String submit(@ModelAttribute("weld") Weld weld, ModelMap model) {
+	public String submit(@Valid @ModelAttribute("weld") Weld weld,BindingResult bindingResult, ModelMap model) {
 		
 		//Guarda los datos del formulario en la base de datos
+		if(bindingResult.hasErrors()) {
+			return "crearSoldadura";
+		}
+		else {
 		weld.setState("CREADA");
 		weldRepository.save(weld);
 		
 		return  "redirect:/verPieza/" + weld.getPiece().getId();
-//		return "redirect:/inicio";
+		}
 	}
 	
 	@RequestMapping("/verPieza/{id}/quitarSoldadura/{idWeld}")
@@ -130,5 +140,47 @@ public class WeldController {
 		model.addAttribute("welds", welds);
 				
 		return "verAlarma";
+	}
+	
+	@RequestMapping("/iniciarSoldadura/{id}")
+	public String soldadorIniciarSoldadura(@PathVariable Long id, Model model) {
+		Optional<Weld> weld = weldRepository.findById(id);
+		
+		if (weld.isPresent() && WeldStatus.CREADA.toString().equals(weld.get().getState())) {
+			weld.get().setState(WeldStatus.INICIADA.toString());
+			weldRepository.save(weld.get());
+		}
+	
+		return "redirect:/soldador/verSoldadura/"+id;
+	}
+	
+	@RequestMapping("/pararSoldadura/{id}")
+	public String soldadorPararSoldadura(@PathVariable Long id, Model model) {
+		Optional<Weld> weld = weldRepository.findById(id);
+		
+		if (weld.isPresent() && WeldStatus.INICIADA.toString().equals(weld.get().getState())) {
+			weld.get().setState(WeldStatus.FINALIZADA.toString());
+			weldRepository.save(weld.get());
+			readingRepository.save(lectura(id));
+		}
+	
+		return "redirect:/soldador/verSoldadura/"+id;
+	}
+	
+	private Reading lectura(Long id){
+		Weld weld = new Weld();
+		weld.setId(id);
+		Reading reading = new Reading();
+		float a = 100;
+		float v = 20;
+		Calendar cal = Calendar.getInstance();
+		cal.setTimeInMillis(2);;
+		cal.add(Calendar.SECOND, 1);
+		reading.setWeld(weld);
+		reading.setAmp(a);
+		reading.setVolt(v);
+		reading.setDate(new Timestamp(cal.getTimeInMillis()));
+		return (reading);
+		
 	}
 }

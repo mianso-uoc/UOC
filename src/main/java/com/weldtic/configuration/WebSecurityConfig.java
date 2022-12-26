@@ -50,7 +50,11 @@ public class WebSecurityConfig {
                 http.authorizeRequests()
                 // URL matching for accessibility
                 .antMatchers("/", "/login", "/register").permitAll()
-                .antMatchers("/company").hasRole("User")
+                .antMatchers("/quitarUser/**").hasRole("User")
+                .antMatchers("/user").hasRole("User")
+                .antMatchers("/verUser/**").hasRole("User")
+                //.antMatchers("/company").hasRole("User")
+                .antMatchers("/quitarEmpresa/**").hasRole("User")
                 .antMatchers("/verEmpresa/**").hasRole("User")
                 .antMatchers("/verProyecto/**").hasAnyRole("Manager", "User")
                 .antMatchers("/verPieza/**").hasAnyRole("Manager", "User")
