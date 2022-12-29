@@ -21,7 +21,7 @@
 					Soldadura</a>
 			</c:if> <c:if test="${weld.state == 'INICIADA'}">
 				<a href="/pararSoldadura/${weld.id}"
-					class=" btn btn-danger active ms-5 mt-5" role="button"
+					class=" btn btn-danger active mt-5" role="button"
 					aria-pressed="true"><i class="bi bi-stop-circle me-2"></i>Parar
 					Soldadura</a>
 			</c:if></span>

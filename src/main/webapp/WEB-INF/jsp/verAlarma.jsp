@@ -6,8 +6,6 @@
 
 <h1>Alarma</h1>
 
-
-
 <div class="card mt-1">
 
 	<div class="card-header mb-3 bg-info">Soldaduras de la pieza</div>
@@ -35,7 +33,7 @@
 						<td>${weld.alarm.info}</td>
 						<td><a href="/verSoldadura/${weld.id}"
 							class=" btn btn-primary btn-sm active" role="button"
-							aria-pressed="true"><i class="bi bi-pencil"></i></a></td>
+							aria-pressed="true"><i class="bi bi-eye"></i></a></td>
 					</tr>
 				</c:forEach>
 			</tbody>

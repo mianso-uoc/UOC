@@ -58,7 +58,8 @@
 					</ul>
 					<a role="button" class="btn btn-primary position-relative me-3"
 						href="/alarma"> <i class="bi bi-bell text-warning"></i> <span
-						class="position-absolute top-5 start-10 translate-middle badge rounded-pill bg-danger">
+						class="position-absolute top-5 start-10 translate-middle badge rounded-pill bg-danger"
+						style="top: 5px;left: 35px;">
 							<c:out value="${alarms}"></c:out> <span class="visually-hidden">unread
 								messages</span>
 					</span>

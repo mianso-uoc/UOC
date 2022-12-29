@@ -1,6 +1,7 @@
 package com.weldtic.model;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +21,7 @@ public class Reading {
 	private long id;
 
 	@Column(name = "date")
-	private Timestamp date;
+	private Date date;
 
 	@Column(name = "amp")
 	private Float amp;
@@ -51,11 +52,11 @@ public class Reading {
 		this.id = id;
 	}
 
-	public Timestamp getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(Timestamp date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 

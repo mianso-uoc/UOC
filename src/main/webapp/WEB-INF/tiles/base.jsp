@@ -48,6 +48,7 @@
 		<script src="/js/weldtic.js"></script>
 
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 
 </body>
 </html>

@@ -21,7 +21,6 @@ public class WatcherControllerAdvice {
 	@ModelAttribute
 	public void loadAlarm(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println(authentication.getPrincipal().getClass().getName());
 		Manager mg = new Manager();
 		if (authentication.getPrincipal() != "anonymousUser") {
 			if(authentication.getPrincipal().getClass().getName() == "com.weldtic.model.Manager") {

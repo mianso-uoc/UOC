@@ -29,104 +29,107 @@
 				</c:if>
 				<tr>
 					<td><form:label path="name" class="mb-3">Nombre</form:label></td>
-					<td><form:input path="name" class="mb-3" required="true" /><form:errors
-							path="name" class="error text-danger" /></td>
+					<td><form:input path="name" class="mb-3" required="true" />
+						<form:errors path="name" class="error text-danger" /></td>
 				</tr>
 				<tr>
 					<td><form:label path="description" class="mb-3">Descripción</form:label></td>
 					<td><form:input path="description" class="mb-3" /></td>
 				</tr>
 				<tr>
-					<td><input class="btn btn-primary mb-3" type="submit"
-						value="Aceptar"></td>
+					<td><input class="btn btn-primary mb-4" type="submit"
+						value="Guardar"></td>
 					<c:if
 						test="${action == 'update' && fn:length(project.projectMachine) > 0 }">
 						<td><a href="/proyecto/${project.id}/crearPieza"
-							class=" btn mb-3 btn-outline-primary" role="button"
-							aria-pressed="true">Crear pieza</a></td>
+							class=" btn mb-4 ms-4 btn-outline-primary" role="button"
+							aria-pressed="true">Crear pieza</a>
+							<a href="/inicio"
+						class=" btn btn-primary mb-4 ms-4" role="button" aria-pressed="true">Volver</a></td>
 					</c:if>
+					
 				</tr>
 			</table>
 		</form:form>
 	</div>
 	<div class="card-header mb-3 bg-info">Piezas del proyecto</div>
 	<div class="card-body">
-	<table class="table table-striped table-bordered table-hover">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Nombre</th>
-				<th>Soldador</th>
-				<th>Máquina</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach items="${pieces}" var="piece">
+		<table class="table table-striped table-bordered table-hover">
+			<thead>
 				<tr>
-					<td>${piece.id}</td>
-					<td>${piece.name}</td>
-					<td>${piece.welder.name}</td>
-					<td>${piece.projectMachine.machine.id}</td>
-					<td><a href="/verPieza/${piece.id}"
-						class=" btn btn-primary btn-sm active" role="button"
-						aria-pressed="true"><i class="bi bi-pencil"></i></a> <a
-						href="/verProyecto/${project.id}/quitarPieza/${piece.id}"
-						class=" btn btn-danger btn-sm active" role="button"
-						aria-pressed="true"><i class="bi bi-trash"></i></a></td>
+					<th>Id</th>
+					<th>Nombre</th>
+					<th>Soldador</th>
+					<th>Máquina</th>
+					<th></th>
 				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				<c:forEach items="${pieces}" var="piece">
+					<tr>
+						<td>${piece.id}</td>
+						<td>${piece.name}</td>
+						<td>${piece.welder.name}</td>
+						<td>${piece.projectMachine.machine.id}</td>
+						<td><a href="/verPieza/${piece.id}"
+							class=" btn btn-primary btn-sm active" role="button"
+							aria-pressed="true"><i class="bi bi-pencil"></i></a> <a
+							href="/verProyecto/${project.id}/quitarPieza/${piece.id}"
+							class=" btn btn-danger btn-sm active" role="button"
+							aria-pressed="true"><i class="bi bi-trash"></i></a></td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
 	</div>
 	<div class="card-header mb-3 bg-info">Máquinas asignadas al
 		proyecto</div>
-			<div class="card-body">
-	<table class="table table-striped table-bordered table-hover">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Número de serie</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach items="${project.projectMachine}" var="projectMachine">
+	<div class="card-body">
+		<table class="table table-striped table-bordered table-hover">
+			<thead>
 				<tr>
-					<td>${projectMachine.machine.id}</td>
-					<td>${projectMachine.machine.serialNumber}</td>
-					<td><a
-						href="/verProyecto/${project.id}/quitar/${projectMachine.machine.id}"
-						class=" btn btn-danger btn-sm active" role="button"
-						aria-pressed="true"><i class="bi bi-trash"></i></a>
+					<th>Id</th>
+					<th>Número de serie</th>
+					<th></th>
 				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				<c:forEach items="${project.projectMachine}" var="projectMachine">
+					<tr>
+						<td>${projectMachine.machine.id}</td>
+						<td>${projectMachine.machine.serialNumber}</td>
+						<td><a
+							href="/verProyecto/${project.id}/quitar/${projectMachine.machine.id}"
+							class=" btn btn-danger btn-sm active" role="button"
+							aria-pressed="true"><i class="bi bi-trash"></i></a>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
 	</div>
 	<div class="card-header mb-3 bg-info">Máquinas sin asignar al
 		proyecto</div>
-			<div class="card-body">
-	<table class="table table-striped table-bordered table-hover">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Número de serie</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach items="${machines}" var="machine">
+	<div class="card-body">
+		<table class="table table-striped table-bordered table-hover">
+			<thead>
 				<tr>
-					<td>${machine.id}</td>
-					<td>${machine.serialNumber}</td>
-					<td><a href="/verProyecto/${project.id}/anadir/${machine.id}"
-						class=" btn btn-primary btn-sm active" role="button"
-						aria-pressed="true"><i class="bi bi-plus-lg"></i></a></td>
+					<th>Id</th>
+					<th>Número de serie</th>
+					<th></th>
 				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				<c:forEach items="${machines}" var="machine">
+					<tr>
+						<td>${machine.id}</td>
+						<td>${machine.serialNumber}</td>
+						<td><a href="/verProyecto/${project.id}/anadir/${machine.id}"
+							class=" btn btn-primary btn-sm active" role="button"
+							aria-pressed="true"><i class="bi bi-plus-lg"></i></a></td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
 	</div>
 </div>
 <div class="col-md-6">

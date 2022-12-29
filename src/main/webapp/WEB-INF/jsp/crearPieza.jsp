@@ -59,7 +59,7 @@
 				</tr>
 				<tr>
 					<td><input class="btn btn-primary mb-4" type="submit"
-						value="Aceptar"></td>
+						value="Guardar"></td>
 					<c:if test="${action == 'update'}">
 						<td><a href="/verPieza/${piece.id}/crearSoldadura"
 							class=" btn btn-outline-primary mb-4" role="button"
@@ -94,7 +94,7 @@
 						<td>${weld.note}</td>
 						<td><a href="/verSoldadura/${weld.id}"
 							class=" btn btn-primary btn-sm active" role="button"
-							aria-pressed="true"><i class="bi bi-pencil"></i></a> <a
+							aria-pressed="true"><i class="bi bi-eye"></i></a> <a
 							href="/verPieza/${piece.id}/quitarSoldadura/${weld.id}"
 							class=" btn btn-danger btn-sm active" role="button"
 							aria-pressed="true"><i class="bi bi-trash"></i></a></td>
