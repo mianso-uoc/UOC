@@ -19,17 +19,19 @@
 				<c:if test="${action == 'update'}">
 					<tr>
 						<td><form:label path="id" class="mb-3">ID</form:label></td>
-						<td><form:input path="id" class="mb-3" /></td>
+						<td><form:input path="id" class="mb-3" readOnly="true"/></td>
 					</tr>
 				</c:if>
 				<tr>
 					<td><form:label path="nif" class="mb-3">NIF</form:label></td>
-					<td><form:input path="nif" class="mb-3" /></td>
+					<td><form:input path="nif" class="mb-3" required="true"/> <form:errors
+							path="nif" class="error text-danger" /></td>
 				</tr>
 				<tr>
 
 					<td><form:label path="name" class="mb-3">Nombre</form:label></td>
-					<td><form:input path="name" class="mb-3" /></td>
+					<td><form:input path="name" class="mb-3" required="true"/> <form:errors
+							path="name" class="error text-danger" /></td>
 				</tr>
 				<tr>
 
@@ -48,7 +50,9 @@
 
 				<tr>
 					<td><input class="btn btn-primary mb-3" type="submit"
-						value="Submit"></td>
+						value="Guardar"></td>
+					<td><a href="/verEmpresa" class=" btn btn-primary mb-3 ms-3"
+						role="button" aria-pressed="true">Volver</a></td>
 				</tr>
 			</table>
 		</form:form>

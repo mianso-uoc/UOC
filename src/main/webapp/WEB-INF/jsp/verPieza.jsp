@@ -63,6 +63,8 @@
 				</c:forEach>
 			</tbody>
 		</table>
+		<a href="/inicio" class=" btn btn-primary mt-3"
+			role="button" aria-pressed="true">Volver</a>
 	</div>
 </div>
 <div class="col-md-6">

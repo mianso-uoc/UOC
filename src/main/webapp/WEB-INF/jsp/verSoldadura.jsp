@@ -12,6 +12,8 @@
 		<h3>Voltaje: ${weld.volt}</h3>
 		<h3>Tolerancia: ${weld.tolerance}</h3>
 		<h3>Estado: ${weld.state}</h3>
+		<a href="/soldador/verPieza/${weld.piece.id}" class=" btn btn-primary mt-3"
+			role="button" aria-pressed="true">Volver</a>
 	</div>
 	<div class="d-inline-flex justify-content-center">
 		<span> <c:if test="${weld.state == 'CREADA'}">

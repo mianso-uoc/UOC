@@ -6,7 +6,7 @@
 
 
 <h1>Proyectos</h1>
-<a href="/crearProyecto" class="btn btn-primary active mb-2" role="button" aria-pressed="true">Crear proyecto</a>
+<a href="/crearProyecto" class="btn btn-primary mb-4 mt-2" role="button" aria-pressed="true">Crear proyecto</a>
 <%-- ${usuario.projects} --%>
 
 <div class="card">
@@ -39,27 +39,3 @@
 		<canvas id="myChart"></canvas>
 	</div>
 </div>
-<script>
-	const labels = [ 'January', 'February', 'March', 'April', 'May', 'June', ];
-
-	const data = {
-		labels : labels,
-		datasets : [ {
-			label : 'My First dataset',
-			backgroundColor : 'rgb(255, 99, 132)',
-			borderColor : 'rgb(255, 99, 132)',
-			data : [ 0, 10, 5, 2, 20, 30, 45 ],
-		} ]
-	};
-
-	const config = {
-		type : 'line',
-		data : data,
-		options : {}
-	};
-</script>
-<script>
-	$(document).ready(function() {
-		const myChart = new Chart(document.getElementById('myChart'), config);
-	});
-</script>

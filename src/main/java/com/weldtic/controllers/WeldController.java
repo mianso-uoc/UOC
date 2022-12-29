@@ -60,12 +60,15 @@ public class WeldController {
 		Optional<Weld> weld = weldRepository.findById(id);
 		
 		if (weld.isPresent()) {
-			List <Reading> readings = readingRepository.findByWeldOrderByDateAsc(weld.get());
 			model.addAttribute("weld", weld.get());
 			model.addAttribute("piece", weld.get().getPiece());
 			model.addAttribute("weldStatus", Arrays.asList(WeldStatus.values()));
+			List <Reading> readings = readingRepository.findByWeldOrderByDateAsc(weld.get());
+			if (readings.isEmpty());
+			else {
 			model.addAttribute("readings", readings);
 			datosGraficos(model, readings, weld.get());
+			}
 		}
 		model.addAttribute("action", "update");
 
@@ -95,7 +98,9 @@ public class WeldController {
 		if (piece.isPresent()) {
 			weld.setPiece(piece.get());
 			// model.addAttribute("weldStatus",Arrays.asList(WeldStatus.values()));
-
+			if (weld.getState() == null) {
+				weld.setState("CREADA");
+			}
 		}
 		model.addAttribute("weld", weld);
 		model.addAttribute("piece", piece);
@@ -110,12 +115,7 @@ public class WeldController {
 		if (bindingResult.hasErrors()) {
 			return "crearSoldadura";
 		} else {
-			if (weld.getState().length() < 1) {
-				weld.setState("CREADA");
-			}
-
 			weldRepository.save(weld);
-
 			return "redirect:/verPieza/" + weld.getPiece().getId();
 		}
 	}

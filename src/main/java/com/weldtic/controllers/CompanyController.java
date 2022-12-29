@@ -3,10 +3,13 @@ package com.weldtic.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.weldtic.model.Company;
 import com.weldtic.model.Machine;
-import com.weldtic.model.Piece;
 import com.weldtic.repository.CompanyRepository;
 import com.weldtic.repository.MachineRepository;
 
@@ -68,13 +70,16 @@ public class CompanyController {
 	}*/
 	
 	@RequestMapping(value= "/guardarEmpresa", method = RequestMethod.POST)
-	public String submit(@ModelAttribute("company") Company company,ModelMap model) {
+	public String submit(@Valid @ModelAttribute("company") Company company,BindingResult bindingResult,ModelMap model) {
 
+		if(bindingResult.hasErrors()) {
+			return "crearEmpresa";
+		}
+		else {
 		//Guarda los datos del formulario en la base de datos
 		companyRepository.save(company);
-		
-
 		return  "redirect:/verEmpresa";
+		}
 	}
 	
 	@RequestMapping("/quitarEmpresa/{id}")

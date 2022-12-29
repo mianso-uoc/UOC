@@ -4,7 +4,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 
 
-<h1>Alarma</h1>
+<h1>Alarmas</h1>
 
 <div class="card mt-1">
 
@@ -38,6 +38,8 @@
 				</c:forEach>
 			</tbody>
 		</table>
+		<a href="/inicio" class=" btn btn-primary mt-4" role="button"
+			aria-pressed="true">Volver</a>
 	</div>
 	<div class="col-md-6">
 		<canvas id="myChart"></canvas>

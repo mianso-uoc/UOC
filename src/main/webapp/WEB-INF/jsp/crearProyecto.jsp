@@ -24,7 +24,7 @@
 				<c:if test="${action == 'update'}">
 					<tr>
 						<td><form:label path="id" class="mb-3">ID</form:label></td>
-						<td><form:input path="id" class="mb-3" /></td>
+						<td><form:input path="id" class="mb-3" readOnly="true"/></td>
 					</tr>
 				</c:if>
 				<tr>
