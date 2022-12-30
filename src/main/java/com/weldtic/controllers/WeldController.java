@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.weldtic.enums.WeldStatus;
 import com.weldtic.model.Alarm;
@@ -58,24 +59,23 @@ public class WeldController {
 	@RequestMapping("/verSoldadura/{id}")
 	public String verSoldadura(@PathVariable Long id, Model model) {
 		Optional<Weld> weld = weldRepository.findById(id);
-		
+
 		if (weld.isPresent()) {
 			model.addAttribute("weld", weld.get());
 			model.addAttribute("piece", weld.get().getPiece());
 			model.addAttribute("weldStatus", Arrays.asList(WeldStatus.values()));
-			List <Reading> readings = readingRepository.findByWeldOrderByDateAsc(weld.get());
-			if (readings.isEmpty());
+			List<Reading> readings = readingRepository.findByWeldOrderByDateAsc(weld.get());
+			if (readings.isEmpty())
+				;
 			else {
-			model.addAttribute("readings", readings);
-			datosGraficos(model, readings, weld.get());
+				model.addAttribute("readings", readings);
+				datosGraficos(model, readings, weld.get());
 			}
 		}
 		model.addAttribute("action", "update");
 
 		return "crearSoldadura";
 	}
-
-
 
 	@RequestMapping("/soldador/verSoldadura/{id}")
 	public String soldadorVerSoldadura(@PathVariable Long id, Model model) {
@@ -109,26 +109,44 @@ public class WeldController {
 	}
 
 	@RequestMapping(value = "/guardarSoldadura", method = RequestMethod.POST)
-	public String submit(@Valid @ModelAttribute("weld") Weld weld, BindingResult bindingResult, ModelMap model) {
+	public String submit(@Valid @ModelAttribute("weld") Weld weld, BindingResult bindingResult, ModelMap model,
+			RedirectAttributes redirectAttributes) {
 
 		// Guarda los datos del formulario en la base de datos
 		if (bindingResult.hasErrors()) {
 			return "crearSoldadura";
 		} else {
-			weldRepository.save(weld);
-			return "redirect:/verPieza/" + weld.getPiece().getId();
+			try {
+				weldRepository.save(weld);
+				redirectAttributes.addFlashAttribute("aviso", "Soldadura guardada correctamente");
+				redirectAttributes.addFlashAttribute("tipo", "success");
+				return "redirect:/verPieza/" + weld.getPiece().getId();
+			} catch (Exception e) {
+				redirectAttributes.addFlashAttribute("aviso", "No se ha podido guardar la soldadura");
+				redirectAttributes.addFlashAttribute("tipo", "danger");
+				return "redirect:/verPieza/" + weld.getPiece().getId();
+			}
 		}
 	}
 
 	@RequestMapping("/verPieza/{id}/quitarSoldadura/{idWeld}")
-	public String quitar(@PathVariable Long id, @PathVariable Long idWeld, Model model) {
+	public String quitar(@PathVariable Long id, @PathVariable Long idWeld, Model model,
+			RedirectAttributes redirectAttributes) {
 
 		Optional<Weld> weld = weldRepository.findById(idWeld);
+		try {
+			if (weld.isPresent()) {
+				weldRepository.delete(weld.get());
+				redirectAttributes.addFlashAttribute("aviso", "La soldadura se ha eliminado correctamente");
+				redirectAttributes.addFlashAttribute("tipo", "success");
 
-		if (weld.isPresent()) {
-			weldRepository.delete(weld.get());
+			}
+			return "redirect:/verPieza/" + id;
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("aviso", "La soldadura no se ha podido eliminar");
+			redirectAttributes.addFlashAttribute("tipo", "danger");
+			return "redirect:/verPieza/" + id;
 		}
-		return "redirect:/verPieza/" + id;
 	}
 
 	@RequestMapping("/alarma")
@@ -159,21 +177,21 @@ public class WeldController {
 	public String soldadorPararSoldadura(@PathVariable Long id, Model model) {
 		Optional<Weld> weld = weldRepository.findById(id);
 		int a = 0;
-		
+
 		if (weld.isPresent() && WeldStatus.INICIADA.toString().equals(weld.get().getState())) {
 			weld.get().setState(WeldStatus.FINALIZADA.toString());
 			weldRepository.save(weld.get());
 			for (int n = 0; n < 10; n++) {
 				readingRepository.save(lectura(id, n));
-				if(alarmaBoolean(lectura(id,n), weld) == true) {
+				if (alarmaBoolean(lectura(id, n), weld) == true) {
 					a = 1;
 				}
 			}
-			if (a ==1) {
+			if (a == 1) {
 				alarmRepository.save(alarma(weld));
 			}
 		}
-		
+
 		return "redirect:/soldador/verPieza/" + weld.get().getPiece().getId();
 	}
 
@@ -194,37 +212,36 @@ public class WeldController {
 		reading.setDate(new Timestamp(cal.getTimeInMillis()));
 		return (reading);
 	}
-	
+
 	private Alarm alarma(Optional<Weld> weld) {
-		
+
 		Alarm alarm = new Alarm();
-		
-			alarm.setWeld(weld.get());
-			alarm.setName("Pasote");
-			alarm.setInfo("Ande vas desgraciao");
-		
+
+		alarm.setWeld(weld.get());
+		alarm.setName("Pasote");
+		alarm.setInfo("Ande vas desgraciao");
 
 		return alarm;
 	}
-	
-	private boolean alarmaBoolean(Reading reading,Optional<Weld> weld) {
-		
+
+	private boolean alarmaBoolean(Reading reading, Optional<Weld> weld) {
+
 		float porcentaje = weld.get().getTolerance();
-		porcentaje = porcentaje/100;
+		porcentaje = porcentaje / 100;
 		float amp = weld.get().getAmp();
-		float ampSup = amp + amp*porcentaje;
-		float ampInf = amp - amp*porcentaje;
+		float ampSup = amp + amp * porcentaje;
+		float ampInf = amp - amp * porcentaje;
 		float volt = weld.get().getVolt();
-		float voltSup = volt + volt*porcentaje;
-		float voltInf = volt - volt*porcentaje;
-		
-		if (reading.getVolt() > voltSup || reading.getAmp() > ampSup || reading.getVolt() < voltInf || reading.getAmp() < ampInf){
+		float voltSup = volt + volt * porcentaje;
+		float voltInf = volt - volt * porcentaje;
+
+		if (reading.getVolt() > voltSup || reading.getAmp() > ampSup || reading.getVolt() < voltInf
+				|| reading.getAmp() < ampInf) {
 			return true;
-		}
-		else
-		return false;
+		} else
+			return false;
 	}
-	
+
 	private void datosGraficos(Model model, List<Reading> readings, Weld weld) {
 		String chartVol = "";
 		String chartVolMax = "";
@@ -232,45 +249,42 @@ public class WeldController {
 		String chartAmp = "";
 		String chartAmpMax = "";
 		String chartAmpMin = "";
-		for(int n=0; n < readings.size(); n++ ) {
-			
+		for (int n = 0; n < readings.size(); n++) {
+
 			Reading reading = readings.get(n);
-			chartVol += "{\"x\":"+reading.getDate().getTime()+",\"y\":"+reading.getVolt()+"}";
-			chartAmp += "{\"x\":"+reading.getDate().getTime()+",\"y\":"+reading.getAmp()+"}";
-			if(n != readings.size()-1) {
+			chartVol += "{\"x\":" + reading.getDate().getTime() + ",\"y\":" + reading.getVolt() + "}";
+			chartAmp += "{\"x\":" + reading.getDate().getTime() + ",\"y\":" + reading.getAmp() + "}";
+			if (n != readings.size() - 1) {
 				chartVol += ",";
 				chartAmp += ",";
 			}
 		}
-		float voltMax = weld.getVolt() + ((float)weld.getTolerance()/100)*weld.getVolt();
-		chartVolMax += "{\"x\":"+readings.get(0).getDate().getTime()+",\"y\":" + voltMax+"},";
-		chartVolMax += "{\"x\":"+readings.get(readings.size()-1).getDate().getTime()+",\"y\":" + voltMax+"}";
+		float voltMax = weld.getVolt() + ((float) weld.getTolerance() / 100) * weld.getVolt();
+		chartVolMax += "{\"x\":" + readings.get(0).getDate().getTime() + ",\"y\":" + voltMax + "},";
+		chartVolMax += "{\"x\":" + readings.get(readings.size() - 1).getDate().getTime() + ",\"y\":" + voltMax + "}";
 
-		float voltMin = weld.getVolt() - ((float)weld.getTolerance()/100)*weld.getVolt();
-		chartVolMin += "{\"x\":"+readings.get(0).getDate().getTime()+",\"y\":" + voltMin+"},";
-		chartVolMin += "{\"x\":"+readings.get(readings.size()-1).getDate().getTime()+",\"y\":" + voltMin+"}";
-		
-		float ampMax = weld.getAmp() + ((float)weld.getTolerance()/100)*weld.getAmp();
-		chartAmpMax += "{\"x\":"+readings.get(0).getDate().getTime()+",\"y\":" + ampMax+"},";
-		chartAmpMax += "{\"x\":"+readings.get(readings.size()-1).getDate().getTime()+",\"y\":" + ampMax+"}";
+		float voltMin = weld.getVolt() - ((float) weld.getTolerance() / 100) * weld.getVolt();
+		chartVolMin += "{\"x\":" + readings.get(0).getDate().getTime() + ",\"y\":" + voltMin + "},";
+		chartVolMin += "{\"x\":" + readings.get(readings.size() - 1).getDate().getTime() + ",\"y\":" + voltMin + "}";
 
-		float ampMin = weld.getAmp() - ((float)weld.getTolerance()/100)*weld.getAmp();
-		chartAmpMin += "{\"x\":"+readings.get(0).getDate().getTime()+",\"y\":" + ampMin+"},";
-		chartAmpMin += "{\"x\":"+readings.get(readings.size()-1).getDate().getTime()+",\"y\":" + ampMin+"}";
-		
+		float ampMax = weld.getAmp() + ((float) weld.getTolerance() / 100) * weld.getAmp();
+		chartAmpMax += "{\"x\":" + readings.get(0).getDate().getTime() + ",\"y\":" + ampMax + "},";
+		chartAmpMax += "{\"x\":" + readings.get(readings.size() - 1).getDate().getTime() + ",\"y\":" + ampMax + "}";
+
+		float ampMin = weld.getAmp() - ((float) weld.getTolerance() / 100) * weld.getAmp();
+		chartAmpMin += "{\"x\":" + readings.get(0).getDate().getTime() + ",\"y\":" + ampMin + "},";
+		chartAmpMin += "{\"x\":" + readings.get(readings.size() - 1).getDate().getTime() + ",\"y\":" + ampMin + "}";
+
 		model.addAttribute("datosVoltMax", chartVolMax);
 		model.addAttribute("datosVoltMin", chartVolMin);
 		model.addAttribute("datosVolt", chartVol);
 		model.addAttribute("datosAmpMax", chartAmpMax);
 		model.addAttribute("datosAmpMin", chartAmpMin);
 		model.addAttribute("datosAmp", chartAmp);
-		model.addAttribute("ampMax", ampMax*1.1);
-		model.addAttribute("ampMin", ampMin*0.9);
-		model.addAttribute("voltMin", voltMin*0.9);
-		model.addAttribute("voltMax", voltMax*1.1);
-
-
-
+		model.addAttribute("ampMax", ampMax * 1.1);
+		model.addAttribute("ampMin", ampMin * 0.9);
+		model.addAttribute("voltMin", voltMin * 0.9);
+		model.addAttribute("voltMax", voltMax * 1.1);
 
 	}
 }

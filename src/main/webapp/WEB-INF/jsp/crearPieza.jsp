@@ -10,6 +10,14 @@
 	<h1>Crear pieza</h1>
 </c:if>
 
+<c:if test="${aviso != null}">
+	<div class="alert alert-${tipo} alert-dismissible fade show"
+		role="alert">
+		<strong><c:out value="${aviso}"></c:out></strong>
+		<button type="button" class="btn-close" data-bs-dismiss="alert"
+			aria-label="Close"></button>
+	</div>
+</c:if>
 
 <div class="card mt-1">
 	<div class="card-header mb-3 bg-info">Rellena los datos

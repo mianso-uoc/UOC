@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.weldtic.model.Piece;
 import com.weldtic.model.Project;
@@ -26,37 +27,34 @@ import com.weldtic.repository.ProjectRepository;
 import com.weldtic.repository.WeldRepository;
 import com.weldtic.repository.WelderRepository;
 
-
-
 @Controller
 public class PieceController {
 
 	@Autowired
 	private WeldRepository<Weld> weldRepository;
-	
+
 	@Autowired
 	private WelderRepository<Welder> welderRepository;
-	
+
 	@Autowired
 	private ProjectRepository<Project> projectRepository;
-	
+
 	@Autowired
 	private PieceRepository<Piece> pieceRepository;
-	
 
 	@RequestMapping("/pieza")
 	public String inicio(Model model) {
 		List<Piece> pieces = pieceRepository.findAll();
 		model.addAttribute("pieces", pieces);
-				
+
 		return "pieza";
 	}
-	
+
 	@RequestMapping("/verPieza/{id}")
 	public String verPieza(@PathVariable Long id, Model model) {
 		Optional<Piece> piece = pieceRepository.findById(id);
 		List<Weld> welds = new ArrayList<>();
-		
+
 		if (piece.isPresent()) {
 			model.addAttribute("piece", piece.get());
 			List<Welder> welders = welderRepository.findWelderByCompany(piece.get().getWelder().getCompany());
@@ -67,14 +65,14 @@ public class PieceController {
 		}
 		model.addAttribute("action", "update");
 
-	
 		return "crearPieza";
 	}
+
 	@RequestMapping("/soldador/verPieza/{id}")
 	public String soldadorVerPieza(@PathVariable Long id, Model model) {
 		Optional<Piece> piece = pieceRepository.findById(id);
 		List<Weld> welds = new ArrayList<>();
-		
+
 		if (piece.isPresent()) {
 			model.addAttribute("piece", piece.get());
 			model.addAttribute("project", piece.get().getProjectMachine().getProject());
@@ -83,6 +81,7 @@ public class PieceController {
 		}
 		return "verPieza";
 	}
+
 	@RequestMapping(value = "/proyecto/{id}/crearPieza", method = RequestMethod.GET)
 	public String nuevaPieza(@PathVariable Long id, Model model) {
 		Piece piece = new Piece();
@@ -97,32 +96,39 @@ public class PieceController {
 		model.addAttribute("piece", piece);
 		model.addAttribute("action", "new");
 		model.addAttribute("project", project.get());
-		
+
 		return "crearPieza";
 	}
-	
-	@RequestMapping(value= "/guardarPieza", method = RequestMethod.POST)
-	public String submit(@Valid @ModelAttribute("piece") Piece piece, BindingResult bindingResult, ModelMap model) {
-		//Guarda los datos del formulario en la base de datos
-		if(bindingResult.hasErrors()) {
+
+	@RequestMapping(value = "/guardarPieza", method = RequestMethod.POST)
+	public String submit(@Valid @ModelAttribute("piece") Piece piece, BindingResult bindingResult, ModelMap model,
+			RedirectAttributes redirectAttributes) {
+		// Guarda los datos del formulario en la base de datos
+		if (bindingResult.hasErrors()) {
 			model.addAttribute("project", piece.getProjectMachine().getProject());
 			List<Welder> welders = welderRepository.findWelderByCompany(piece.getWelder().getCompany());
 			model.addAttribute("welders", welders);
 			return "crearPieza";
-		}
-		else
-		{
-		pieceRepository.save(piece);
-		return  "redirect:/verProyecto/" + piece.getProjectMachine().getProject().getId();
+		} else {
+			try {
+				pieceRepository.save(piece);
+				redirectAttributes.addFlashAttribute("aviso", "Pieza guardada correctamente");
+				redirectAttributes.addFlashAttribute("tipo", "success");
+				return "redirect:/verProyecto/" + piece.getProjectMachine().getProject().getId();
+			} catch (Exception e) {
+				redirectAttributes.addFlashAttribute("aviso", "No se ha podido guardar la pieza");
+				redirectAttributes.addFlashAttribute("tipo", "danger");
+				return "redirect:/verProyecto/" + piece.getProjectMachine().getProject().getId();
+			}
 		}
 	}
-	
+
 	@RequestMapping("/verProyecto/{id}/quitarPieza/{idPiece}")
-	public String quitar(@PathVariable Long id,@PathVariable Long idPiece, Model model) {
-		
+	public String quitar(@PathVariable Long id, @PathVariable Long idPiece, Model model) {
+
 		Optional<Piece> piece = pieceRepository.findById(idPiece);
-		
-		if (piece.isPresent()){
+
+		if (piece.isPresent()) {
 			pieceRepository.delete(piece.get());
 		}
 		return "redirect:/verProyecto/" + id;
