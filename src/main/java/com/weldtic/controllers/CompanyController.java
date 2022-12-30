@@ -25,26 +25,27 @@ import com.weldtic.repository.MachineRepository;
 public class CompanyController {
 	@Autowired
 	private CompanyRepository<Company> companyRepository;
-	
+
 	@Autowired
 	private MachineRepository<Machine> machineRepository;
-	
+
 	@RequestMapping("/verEmpresa")
 	public String inicio(Model model) {
 		List<Company> companies = companyRepository.findAll();
 		model.addAttribute("companies", companies);
-		
+
 //		Company company = new Company();
 //		company.setName("Twitter");
 //		companyRepository.save(company);
-		
+
 		return "verEmpresa";
 	}
-	//SELECT de base de datos con la id de company
+
+	// SELECT de base de datos con la id de company
 	@RequestMapping("/verEmpresa/{id}")
 	public String inicio(@PathVariable Long id, Model model) {
 		Optional<Company> company = companyRepository.findById(id);
-		
+
 		List<Machine> machines = machineRepository.findAll();
 		model.addAttribute("machines", machines);
 		if (company.isPresent()) {
@@ -53,41 +54,52 @@ public class CompanyController {
 		model.addAttribute("action", "update");
 		return "crearEmpresa";
 	}
-	//con model pasamos datos del controller al jsp(la vista)
+
+	// con model pasamos datos del controller al jsp(la vista)
 	@RequestMapping(value = "/crearEmpresa", method = RequestMethod.GET)
 	public String nuevaEmpresa(Model model) {
 		Company company = new Company();
 		model.addAttribute("company", company);
-		
+
 		model.addAttribute("action", "new");
-		
+
 		return "crearEmpresa";
 	}
-	
-	/*@RequestMapping(value = "/crearEmpresa", method = RequestMethod.GET)
-	public ModelAndView showForm() {
-		return new ModelAndView("company", "crearEmpresa", new Company());
-	}*/
-	
-	@RequestMapping(value= "/guardarEmpresa", method = RequestMethod.POST)
-	public String submit(@Valid @ModelAttribute("company") Company company,BindingResult bindingResult,ModelMap model) {
 
-		if(bindingResult.hasErrors()) {
+	/*
+	 * @RequestMapping(value = "/crearEmpresa", method = RequestMethod.GET) public
+	 * ModelAndView showForm() { return new ModelAndView("company", "crearEmpresa",
+	 * new Company()); }
+	 */
+
+	@RequestMapping(value = "/guardarEmpresa", method = RequestMethod.POST)
+	public String submit(@Valid @ModelAttribute("company") Company company, BindingResult bindingResult, ModelMap model,
+			RedirectAttributes redirectAttributes) {
+
+		if (bindingResult.hasErrors()) {
 			return "crearEmpresa";
-		}
-		else {
-		//Guarda los datos del formulario en la base de datos
-		companyRepository.save(company);
-		return  "redirect:/verEmpresa";
+		} else {
+			try {
+				// Guarda los datos del formulario en la base de datos
+				companyRepository.save(company);
+				redirectAttributes.addFlashAttribute("aviso", "Empresa guardada correctamente");
+				redirectAttributes.addFlashAttribute("tipo", "success");
+				return "redirect:/verEmpresa";
+
+			} catch (Exception e) {
+				redirectAttributes.addFlashAttribute("aviso", "No se ha podido guardar la empresa");
+				redirectAttributes.addFlashAttribute("tipo", "danger");
+				return "redirect:/verEmpresa";
+			}
 		}
 	}
-	
+
 	@RequestMapping("/quitarEmpresa/{id}")
 	public String quitar(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-		
+
 		Optional<Company> company = companyRepository.findById(id);
 		try {
-			if (company.isPresent()){
+			if (company.isPresent()) {
 				companyRepository.delete(company.get());
 			}
 			redirectAttributes.addFlashAttribute("aviso", "Empresa eliminada correctamente");

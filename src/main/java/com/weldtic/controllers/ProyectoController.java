@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.weldtic.model.Company;
 import com.weldtic.model.Machine;
@@ -47,7 +48,7 @@ public class ProyectoController {
 
 	@Autowired
 	private PieceRepository<Piece> pieceRepository;
-	
+
 	@Autowired
 	private UserRepository<User> userRepository;
 
@@ -55,7 +56,7 @@ public class ProyectoController {
 	public String inicio(Model model) {
 		List<Project> projects = projectRepository.findAll();
 		model.addAttribute("projects", projects);
-		
+
 		return "inicioResponsable";
 	}
 
@@ -113,30 +114,38 @@ public class ProyectoController {
 	}
 
 	@RequestMapping(value = "/guardarProyecto", method = RequestMethod.POST)
-	public String submit(@Valid @ModelAttribute("project") Project project, BindingResult bindingResult, ModelMap model) {
-		//Se comprueba que no hay errores en el formulario
-		if(bindingResult.hasErrors()) {
+	public String submit(@Valid @ModelAttribute("project") Project project, BindingResult bindingResult, ModelMap model,
+			RedirectAttributes redirectAttributes) {
+		// Se comprueba que no hay errores en el formulario
+		if (bindingResult.hasErrors()) {
 			return "crearProyecto";
-		}
-		else {
-		// Se guarda el objeto del user logeado
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Manager currentPrincipalName = (Manager) authentication.getPrincipal();
-		project.setManager(currentPrincipalName);
+		} else {
+			try {
+				// Se guarda el objeto del user logeado
+				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+				Manager currentPrincipalName = (Manager) authentication.getPrincipal();
+				project.setManager(currentPrincipalName);
 
-		// Guarda los datos del formulario en la base de datos
-		projectRepository.save(project);
-		
-		//se cargan los datos del usuario logeado para que aparezca el nuevo proyecto
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User user = (User)auth.getPrincipal();
-		//se accede a la base de datos para obtener el usuario con la lista de los proyectos actualizada
-		user = userRepository.findUserByName(currentPrincipalName.getName());
-		Authentication newAuth = new UsernamePasswordAuthenticationToken(user,
-				user.getPassword(), user.getAuthorities());
-		SecurityContextHolder.getContext().setAuthentication(newAuth);
+				// Guarda los datos del formulario en la base de datos
+				projectRepository.save(project);
+				redirectAttributes.addFlashAttribute("aviso", "Proyecto guardado correctamente");
+				redirectAttributes.addFlashAttribute("tipo", "success");
+				// se cargan los datos del usuario logeado para que aparezca el nuevo proyecto
+				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+				User user = (User) auth.getPrincipal();
+				// se accede a la base de datos para obtener el usuario con la lista de los
+				// proyectos actualizada
+				user = userRepository.findUserByName(currentPrincipalName.getName());
+				Authentication newAuth = new UsernamePasswordAuthenticationToken(user, user.getPassword(),
+						user.getAuthorities());
+				SecurityContextHolder.getContext().setAuthentication(newAuth);
 
-		return "redirect:/proyecto";
+				return "redirect:/proyecto";
+			} catch (Exception e) {
+				redirectAttributes.addFlashAttribute("aviso", "El proyecto no se ha podido guardar");
+				redirectAttributes.addFlashAttribute("tipo", "success");
+				return "redirect:/proyecto";
+			}
 		}
 	}
 

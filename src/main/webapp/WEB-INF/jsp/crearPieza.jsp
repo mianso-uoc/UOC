@@ -20,7 +20,7 @@
 				<c:if test="${action == 'update'}">
 					<tr>
 						<td><form:label path="id" class="mb-3">ID</form:label></td>
-						<td><form:input path="id" class="mb-3" readOnly="true"/></td>
+						<td><form:input path="id" class="mb-3" readOnly="true" /></td>
 					</tr>
 				</c:if>
 				<tr>
@@ -58,12 +58,20 @@
 						</form:select></td>
 				</tr>
 				<tr>
-					<td><input class="btn btn-primary mb-4" type="submit"
-						value="Guardar"> </td>
+					<c:if test="${action == 'new'}">
+						<td><input class="btn btn-primary mb-4" type="submit"
+							value="Guardar"></td>
+						<td><a href="/verProyecto/${piece.projectMachine.project.id}"
+							class=" btn btn-primary mb-4 ms-4" role="button"
+							aria-pressed="true"> Volver</a></td>
+					</c:if>
 					<c:if test="${action == 'update'}">
+						<td><input class="btn btn-primary mb-4" type="submit"
+							value="Guardar"></td>
 						<td><a href="/verPieza/${piece.id}/crearSoldadura"
 							class=" btn btn-outline-primary mb-4" role="button"
-							aria-pressed="true"> Crear soldadura</a> <a href="/verProyecto/${piece.projectMachine.project.id}"
+							aria-pressed="true"> Crear soldadura</a> <a
+							href="/verProyecto/${piece.projectMachine.project.id}"
 							class=" btn btn-primary mb-4 ms-4" role="button"
 							aria-pressed="true"> Volver</a></td>
 					</c:if>
