@@ -4,22 +4,20 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-
+<c:if test="${aviso != null}">
+	<div class="alert alert-${tipo} alert-dismissible fade show mt-2"
+		role="alert">
+		<strong><c:out value="${aviso}"></c:out></strong>
+		<button type="button" class="btn-close" data-bs-dismiss="alert"
+			aria-label="Close"></button>
+	</div>
+</c:if>
 
 <c:if test="${action == 'update'}">
 	<h1>Proyecto: ${project.name }</h1>
 </c:if>
 <c:if test="${action == 'new'}">
 	<h1>Nuevo proyecto</h1>
-</c:if>
-
-<c:if test="${aviso != null}">
-	<div class="alert alert-${tipo} alert-dismissible fade show"
-		role="alert">
-		<strong><c:out value="${aviso}"></c:out></strong>
-		<button type="button" class="btn-close" data-bs-dismiss="alert"
-			aria-label="Close"></button>
-	</div>
 </c:if>
 
 <div class="card mt-1">
