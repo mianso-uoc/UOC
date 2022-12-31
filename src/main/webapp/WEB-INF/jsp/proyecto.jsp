@@ -1,13 +1,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+
 
 <c:if test="${aviso != null}">
-	<div class="alert alert-${tipo} alert-dismissible fade show"
+	<div class="alert alert-${tipo} alert-dismissible fade show mt-2"
 		role="alert">
 		<strong><c:out value="${aviso}"></c:out></strong>
 		<button type="button" class="btn-close" data-bs-dismiss="alert"
 			aria-label="Close"></button>
 	</div>
 </c:if>
+
+<security:authentication var="usuario" property="principal" />
 
 <h1>Proyectos</h1>
 

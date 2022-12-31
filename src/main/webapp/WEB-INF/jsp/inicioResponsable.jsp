@@ -3,7 +3,7 @@
 
 
 <c:if test="${aviso != null}">
-	<div class="alert alert-${tipo} alert-dismissible fade show"
+	<div class="alert alert-${tipo} alert-dismissible fade show mt-2"
 		role="alert">
 		<strong><c:out value="${aviso}"></c:out></strong>
 		<button type="button" class="btn-close" data-bs-dismiss="alert"
@@ -31,12 +31,12 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${usuario.projects}" var="projects">
+				<c:forEach items="${projects}" var="project">
 					<tr>
-						<td>${projects.id}</td>
-						<td>${projects.name}</td>
-						<td>${projects.description}</td>
-						<td><a href="/verProyecto/${projects.id}"
+						<td>${project.id}</td>
+						<td>${project.name}</td>
+						<td>${project.description}</td>
+						<td><a href="/verProyecto/${project.id}"
 							class=" btn btn-primary active" role="button" aria-pressed="true"><i
 								class="bi bi-eye"></i></a></td>
 					</tr>

@@ -130,17 +130,9 @@ public class ProyectoController {
 				projectRepository.save(project);
 				redirectAttributes.addFlashAttribute("aviso", "Proyecto guardado correctamente");
 				redirectAttributes.addFlashAttribute("tipo", "success");
-				// se cargan los datos del usuario logeado para que aparezca el nuevo proyecto
-				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-				User user = (User) auth.getPrincipal();
-				// se accede a la base de datos para obtener el usuario con la lista de los
-				// proyectos actualizada
-				user = userRepository.findUserByName(currentPrincipalName.getName());
-				Authentication newAuth = new UsernamePasswordAuthenticationToken(user, user.getPassword(),
-						user.getAuthorities());
-				SecurityContextHolder.getContext().setAuthentication(newAuth);
+				
 
-				return "redirect:/proyecto";
+				return "redirect:/inicio";
 			} catch (Exception e) {
 				redirectAttributes.addFlashAttribute("aviso", "El proyecto no se ha podido guardar");
 				redirectAttributes.addFlashAttribute("tipo", "success");
