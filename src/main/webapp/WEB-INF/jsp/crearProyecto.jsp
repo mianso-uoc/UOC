@@ -50,8 +50,11 @@
 						<td><a href="/inicio" class=" btn btn-primary mb-4 ms-4"
 							role="button" aria-pressed="true">Volver</a></td>
 					</c:if>
-					<c:if test="${action == 'update' && fn:length(project.projectMachine) == 0 }">
-						<td><a href="/inicio" class=" btn btn-primary mb-4"
+					<c:if
+						test="${action == 'update' && fn:length(project.projectMachine) == 0 }">
+						<td><input class="btn btn-primary mb-4" type="submit"
+							value="Guardar"></td>
+						<td><a href="/inicio" class=" btn btn-primary mb-4 ms-3"
 							role="button" aria-pressed="true">Volver</a></td>
 					</c:if>
 					<c:if

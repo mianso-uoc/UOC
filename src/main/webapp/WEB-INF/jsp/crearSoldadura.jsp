@@ -5,7 +5,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <c:if test="${action == 'update'}">
-	<h1>Modificar soldadura nº ${weld.id}</h1>
+	<h1>Soldadura nº ${weld.id}</h1>
+	<h2>Proyecto: ${weld.piece.projectMachine.project.name}</h2>
+	<h3>Forma parte de la pieza: ${weld.piece.name} (id nº${weld.piece.id})</h3>
 </c:if>
 <c:if test="${action == 'new'}">
 	<h1>Crear soldadura</h1>

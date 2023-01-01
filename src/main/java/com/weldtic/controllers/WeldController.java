@@ -218,8 +218,8 @@ public class WeldController {
 		Alarm alarm = new Alarm();
 
 		alarm.setWeld(weld.get());
-		alarm.setName("Pasote");
-		alarm.setInfo("Ande vas desgraciao");
+		alarm.setName("Soldadura defectuosa");
+		alarm.setInfo("Soldadura con parametros fuera de la tolerancia");
 
 		return alarm;
 	}
