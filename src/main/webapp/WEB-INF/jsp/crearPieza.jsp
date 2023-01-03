@@ -28,17 +28,17 @@
 				<c:if test="${action == 'update'}">
 					<tr>
 						<td><form:label path="id" class="mb-3">ID</form:label></td>
-						<td><form:input path="id" class="mb-3" readOnly="true" /></td>
+						<td><form:input path="id" class="form-control mb-3" readOnly="true" /></td>
 					</tr>
 				</c:if>
 				<tr>
 					<td><form:label path="name" class="mb-3">Nombre</form:label></td>
-					<td><form:input path="name" class="mb-3" required="true" /> <form:errors
+					<td><form:input path="name" class="form-control mb-3" required="true" /> <form:errors
 							path="name" class="error text-danger" /></td>
 				</tr>
 				<tr>
 					<td><form:label path="observaciones" class="mb-3">Observaciones</form:label></td>
-					<td><form:input path="observaciones" class="mb-3" /></td>
+					<td><form:input path="observaciones" class="form-control mb-3" /></td>
 				</tr>
 				<tr>
 					<!-- 				path hace referencia a que en la clase piece hay un objeto welder. equivale a piece.welder -->

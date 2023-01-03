@@ -48,17 +48,16 @@ public class WelderController {
 	@RequestMapping(value= "/guardarSoldador", method = RequestMethod.POST)
 	public String submit(@ModelAttribute("welder") Welder welder) {
 
+		if (welder.getPassword().length() == 60) {
+			userRepository.save(welder);
+		} else {
 		String passw = welder.getPassword();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(passw);
-        welder.setPassword(encodedPassword);
-		
+        welder.setPassword(encodedPassword);	
 		//Guarda los datos del formulario en la base de datos
 		userRepository.save(welder);
-		
-		//System.out.println(company.getName()+" "+company.getAddress());
-
-
+		}
 		return  "redirect:/user";
 	}
 }

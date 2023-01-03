@@ -44,6 +44,9 @@ public class ManagerController {
 	@RequestMapping(value = "/guardarResponsable", method = RequestMethod.POST)
 	public String submit(@ModelAttribute("manager") Manager manager) {
 
+		if (manager.getPassword().length() == 60) {
+			userRepository.save(manager);
+		} else {
 		String passw = manager.getPassword();
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String encodedPassword = passwordEncoder.encode(passw);
@@ -51,7 +54,7 @@ public class ManagerController {
 
 		// Guarda los datos del formulario en la base de datos
 		userRepository.save(manager);
-
+		}
 		// System.out.println(company.getName()+" "+company.getAddress());
 
 		return "redirect:/user";
