@@ -160,6 +160,17 @@ public class WeldController {
 
 		return "verAlarma";
 	}
+	
+	@RequestMapping("/verSoldaduras")
+	public String verSoldaduras(Model model) {
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Manager currentPrincipalName = (Manager) authentication.getPrincipal();
+
+		List<Weld> welds = weldRepository.findByManager(currentPrincipalName.getId());
+		model.addAttribute("welds", welds);
+		return "verSoldaduras";
+	}
 
 	@RequestMapping("/iniciarSoldadura/{id}")
 	public String soldadorIniciarSoldadura(@PathVariable Long id, Model model) {

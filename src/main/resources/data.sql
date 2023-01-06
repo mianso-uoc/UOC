@@ -97,3 +97,10 @@ INSERT INTO public.reading (id,amp,"date",volt,weld_id) VALUES
 
 INSERT INTO public.alarm (id,info,name,weld_id) VALUES
 	 (28,'Soldadura con parametros fuera de la tolerancia','Soldadura defectuosa',17);
+
+	 
+	 
+	 
+	 
+	 
+	 

@@ -19,33 +19,33 @@
 				<c:if test="${action == 'update'}">
 					<tr>
 						<td><form:label path="id" class="mb-3">ID</form:label></td>
-						<td><form:input path="id" class="mb-3" readOnly="true"/></td>
+						<td><form:input path="id" class="form-control mb-3" readOnly="true"/></td>
 					</tr>
 				</c:if>
 				<tr>
 					<td><form:label path="nif" class="mb-3">NIF</form:label></td>
-					<td><form:input path="nif" class="mb-3" required="true"/> <form:errors
+					<td><form:input path="nif" class="form-control mb-3" required="true"/> <form:errors
 							path="nif" class="error text-danger" /></td>
 				</tr>
 				<tr>
 
 					<td><form:label path="name" class="mb-3">Nombre</form:label></td>
-					<td><form:input path="name" class="mb-3" required="true"/> <form:errors
+					<td><form:input path="name" class="form-control mb-3" required="true"/> <form:errors
 							path="name" class="error text-danger" /></td>
 				</tr>
 				<tr>
 
 					<td><form:label path="address" class="mb-3">Dirección</form:label></td>
-					<td><form:input path="address" class="mb-3" /></td>
+					<td><form:input path="address" class="form-control mb-3" /></td>
 
 				</tr>
 				<tr>
 					<td><form:label path="phone" class="mb-3">Teléfono</form:label></td>
-					<td><form:input path="phone" class="mb-3" /></td>
+					<td><form:input path="phone" class="form-control mb-3" /></td>
 				</tr>
 				<tr>
 					<td><form:label path="description" class="mb-3">Descripción</form:label></td>
-					<td><form:input path="description" class="mb-3" /></td>
+					<td><form:input path="description" class="form-control mb-3" /></td>
 				</tr>
 
 				<tr>

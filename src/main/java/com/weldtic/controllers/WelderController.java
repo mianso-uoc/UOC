@@ -3,10 +3,13 @@ package com.weldtic.controllers;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,19 +49,22 @@ public class WelderController {
 	}
 	
 	@RequestMapping(value= "/guardarSoldador", method = RequestMethod.POST)
-	public String submit(@ModelAttribute("welder") Welder welder) {
-
+	public String submit(@Valid @ModelAttribute("welder") Welder welder, BindingResult bindingResult, Model model) {
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("action", "new");
+			return "crearSoldador";
+		} else {
+		if (welder.getPassword().length() == 60) {
+			userRepository.save(welder);
+		} else {
 		String passw = welder.getPassword();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(passw);
-        welder.setPassword(encodedPassword);
-		
+        welder.setPassword(encodedPassword);	
 		//Guarda los datos del formulario en la base de datos
 		userRepository.save(welder);
-		
-		//System.out.println(company.getName()+" "+company.getAddress());
-
-
+		}
 		return  "redirect:/user";
+		}
 	}
 }
