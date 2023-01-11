@@ -1,11 +1,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
 <c:if test="${action == 'update'}">
 	<h1>Modificar soldador</h1>
 </c:if>
 <c:if test="${action == 'new'}">
 	<h1>Crear soldador</h1>
 </c:if>
+
 <div class="card mt-1">
 	<div class="card-header mb-3 bg-info">Rellena los datos
 		requeridos</div>

@@ -88,6 +88,7 @@ public class UserController {
 	public String submit(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, ModelMap model) {
 
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("action", "new");
 			return "crearUser";
 		} else {
 

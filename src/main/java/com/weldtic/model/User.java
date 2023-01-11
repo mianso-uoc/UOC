@@ -41,7 +41,7 @@ public class User implements UserDetails {
 	
 	@Column(name = "password")
 	@NotBlank
-	@Size(min = 4, max = 16)
+	@Size(min = 4, max = 60)
 	private String password;
 
 	@Column(name = "address")
