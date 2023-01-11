@@ -15,6 +15,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Formula;
 import org.springframework.security.core.GrantedAuthority;
@@ -40,6 +41,7 @@ public class User implements UserDetails {
 	
 	@Column(name = "password")
 	@NotBlank
+	@Size(min = 4, max = 60)
 	private String password;
 
 	@Column(name = "address")

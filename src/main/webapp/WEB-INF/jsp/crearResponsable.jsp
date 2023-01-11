@@ -14,6 +14,7 @@
 	<div class="card-body">
 		<form:form method="POST" action="/guardarResponsable"
 			modelAttribute="manager">
+			
 			<table>
 				<c:if test="${action == 'update'}">
 					<tr class="">
@@ -22,7 +23,6 @@
 					</tr>
 				</c:if>
 				<tr>
-
 					<td><form:label path="name" class="form-label mb-3">Nombre</form:label></td>
 					<td><form:input path="name" class="form-control mb-3"
 							required="true" />
