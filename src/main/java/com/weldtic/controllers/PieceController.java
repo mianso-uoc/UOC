@@ -116,7 +116,7 @@ public class PieceController {
 				redirectAttributes.addFlashAttribute("tipo", "success");
 				return "redirect:/verProyecto/" + piece.getProjectMachine().getProject().getId();
 			} catch (Exception e) {
-				redirectAttributes.addFlashAttribute("aviso", "No se ha podido guardar la pieza");
+				redirectAttributes.addFlashAttribute("aviso", "No se puede guardar la pieza");
 				redirectAttributes.addFlashAttribute("tipo", "danger");
 				return "redirect:/verProyecto/" + piece.getProjectMachine().getProject().getId();
 			}
@@ -124,13 +124,21 @@ public class PieceController {
 	}
 
 	@RequestMapping("/verProyecto/{id}/quitarPieza/{idPiece}")
-	public String quitar(@PathVariable Long id, @PathVariable Long idPiece, Model model) {
+	public String quitar(@PathVariable Long id, @PathVariable Long idPiece, Model model, RedirectAttributes redirectAttributes) {
 
 		Optional<Piece> piece = pieceRepository.findById(idPiece);
 
+		try {
 		if (piece.isPresent()) {
 			pieceRepository.delete(piece.get());
 		}
+		redirectAttributes.addFlashAttribute("aviso", "Pieza borrada correctamente");
+		redirectAttributes.addFlashAttribute("tipo", "success");
 		return "redirect:/verProyecto/" + id;
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("aviso", "No se puede eliminar la pieza");
+			redirectAttributes.addFlashAttribute("tipo", "danger");
+		return "redirect:/verProyecto/" + id;
+		}
 	}
 }
