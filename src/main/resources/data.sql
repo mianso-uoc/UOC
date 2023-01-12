@@ -1,3 +1,4 @@
+
 INSERT INTO public.company (id,address,description,name,nif,phone) VALUES
 	 (14,'Calle empresa 1','Descripcion 1','Empresa1','987654321A','987654'),
 	 (15,'Calle empresa 2','Descripcion 2','Empresa2','54635','2343242567'),
@@ -98,6 +99,7 @@ INSERT INTO public.reading (id,amp,"date",volt,weld_id) VALUES
 INSERT INTO public.alarm (id,info,name,weld_id) VALUES
 	 (28,'Soldadura con parametros fuera de la tolerancia','Soldadura defectuosa',17);
 
+ALTER SEQUENCE hibernate_sequence RESTART WITH 400;
 	 
 	 
 	 
