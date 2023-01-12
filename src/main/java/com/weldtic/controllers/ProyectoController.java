@@ -129,7 +129,6 @@ public class ProyectoController {
 				projectRepository.save(project);
 				redirectAttributes.addFlashAttribute("aviso", "Proyecto guardado correctamente");
 				redirectAttributes.addFlashAttribute("tipo", "success");
-				
 
 				return "redirect:/inicio";
 			} catch (Exception e) {
@@ -141,30 +140,46 @@ public class ProyectoController {
 	}
 
 	@RequestMapping("/verProyecto/{id}/anadir/{idMachine}")
-	public String anadir(@PathVariable Long id, @PathVariable Long idMachine, Model model) {
+	public String anadir(@PathVariable Long id, @PathVariable Long idMachine, Model model,
+			RedirectAttributes redirectAttributes) {
 		Optional<Project> project = projectRepository.findById(id);
 		Optional<Machine> machine = machineRepository.findById(idMachine);
-
-		if (project.isPresent() && machine.isPresent()) {
-			ProjectMachine projectMachine = new ProjectMachine();
-			projectMachine.setProject(project.get());
-			projectMachine.setMachine(machine.get());
-			projectMachineRepository.save(projectMachine);
+		try {
+			if (project.isPresent() && machine.isPresent()) {
+				ProjectMachine projectMachine = new ProjectMachine();
+				projectMachine.setProject(project.get());
+				projectMachine.setMachine(machine.get());
+				projectMachineRepository.save(projectMachine);
+			}
+			redirectAttributes.addFlashAttribute("aviso", "Máquina añadida proyecto");
+			redirectAttributes.addFlashAttribute("tipo", "success");
+			return "redirect:/verProyecto/" + id;
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("aviso", "No se puede añadir la máquina al proyecto");
+			redirectAttributes.addFlashAttribute("tipo", "success");
+			return "redirect:/verProyecto/" + id;
 		}
-		return "redirect:/verProyecto/" + id;
 	}
 
 	@RequestMapping("/verProyecto/{id}/quitar/{idMachine}")
-	public String quitar(@PathVariable Long id, @PathVariable Long idMachine, Model model) {
+	public String quitar(@PathVariable Long id, @PathVariable Long idMachine, Model model,
+			RedirectAttributes redirectAttributes) {
 		Optional<Project> project = projectRepository.findById(id);
 		Optional<Machine> machine = machineRepository.findById(idMachine);
-
-		if (project.isPresent() && machine.isPresent()) {
-			ProjectMachine projectMachine = new ProjectMachine();
-			projectMachine.setProject(project.get());
-			projectMachine.setMachine(machine.get());
-			projectMachineRepository.delete(projectMachine);
+		try {
+			if (project.isPresent() && machine.isPresent()) {
+				ProjectMachine projectMachine = new ProjectMachine();
+				projectMachine.setProject(project.get());
+				projectMachine.setMachine(machine.get());
+				projectMachineRepository.delete(projectMachine);
+			}
+			redirectAttributes.addFlashAttribute("aviso", "Máquina eliminada del proyecto");
+			redirectAttributes.addFlashAttribute("tipo", "success");
+			return "redirect:/verProyecto/" + id;
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("aviso", "No se puede eliminar la máquina del proyecto");
+			redirectAttributes.addFlashAttribute("tipo", "danger");
+			return "redirect:/verProyecto/" + id;
 		}
-		return "redirect:/verProyecto/" + id;
 	}
 }
